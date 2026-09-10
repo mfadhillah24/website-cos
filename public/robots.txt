@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /login
+Disallow: /register
+Disallow: /register/download/
+Disallow: /dashboard
+
+Sitemap: https://cyberopensource.rf.gd/sitemap.xml

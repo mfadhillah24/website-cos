@@ -1,0 +1,176 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* === Global Color Theme === */
+    --color-primary-navy: #071A52;
+    --color-primary-navy-hover: #0B236B;
+    --color-secondary-blue: #1E88E5;
+    
+    --color-bg-page: #F5F7FA;
+}
+
+/* =============================================
+   GLOBAL UI SYSTEM
+   ============================================= */
+
+@layer components {
+
+    /* -- Containers & Sections -- */
+    .section-container {
+        @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    }
+    .section-container-lg {
+        @apply max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8;
+    }
+    
+    .section-spacing {
+        @apply py-12 md:py-16 lg:py-20;
+    }
+    .section-spacing-sm {
+        @apply py-8 md:py-12;
+    }
+
+    /* -- Cards -- */
+    .ui-card {
+        @apply bg-white border border-gray-200 rounded-xl shadow-sm;
+    }
+    .ui-card-hover {
+        @apply transition-shadow duration-200 hover:shadow-md;
+    }
+
+    /* -- Tables -- */
+    .ui-table-container {
+        @apply bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm;
+    }
+    .ui-table {
+        @apply w-full text-left text-sm text-gray-600;
+    }
+    .ui-table th {
+        @apply bg-gray-50 text-gray-600 font-medium px-4 py-3 border-b border-gray-200;
+    }
+    .ui-table td {
+        @apply px-4 py-3 border-b border-gray-100;
+    }
+    .ui-table tbody tr {
+        @apply hover:bg-gray-50 transition-colors duration-150;
+    }
+
+    /* -- Forms -- */
+    .ui-input {
+        @apply w-full rounded-lg border-gray-300 bg-white px-3 py-2.5 text-sm text-gray-900 focus:ring focus:ring-secondary-blue/20 focus:border-secondary-blue transition-colors duration-200 outline-none;
+    }
+    .ui-label {
+        @apply block text-sm font-medium text-gray-700 mb-1.5;
+    }
+    .ui-error {
+        @apply mt-1.5 text-sm text-red-600;
+    }
+
+    /* -- Buttons -- */
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 outline-none bg-primary-navy text-white hover:bg-primary-navy-hover focus:ring-2 focus:ring-primary-navy/20;
+    }
+    .btn-secondary {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 outline-none bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-gray-200;
+    }
+    .btn-danger {
+        @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200 outline-none bg-red-600 text-white hover:bg-red-700 focus:ring-2 focus:ring-red-600/20;
+    }
+    
+    /* -- Page Headers -- */
+    .page-title {
+        @apply text-2xl font-semibold text-gray-900;
+    }
+    .page-subtitle {
+        @apply text-gray-500 mt-1;
+    }
+
+    /* -- Badge -- */
+    .ui-badge {
+        @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-blue/10 text-secondary-blue border border-secondary-blue/20;
+    }
+
+    /* -- Public Navbar specific -- */
+    .pub-navbar {
+        @apply fixed top-0 left-0 right-0 z-50 bg-primary-navy transition-all duration-300;
+        height: 72px;
+    }
+    .pub-navbar.scrolled {
+        @apply shadow-md;
+    }
+    .nav-link-pub {
+        @apply px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-colors duration-200;
+    }
+    .nav-link-pub.active {
+        @apply text-white bg-white/10;
+    }
+
+    /* =============================================
+       ANIMATIONS & TRANSITIONS
+       ============================================= */
+    .page-transition-wrap {
+        opacity: 0;
+        transition: opacity 350ms ease-in-out;
+    }
+    .page-transition-wrap.page-loaded {
+        opacity: 1;
+    }
+    .page-transition-wrap.page-leaving {
+        opacity: 0;
+    }
+
+    .reveal {
+        opacity: 0;
+        will-change: opacity, transform;
+        transition: opacity 500ms ease-out, transform 500ms ease-out;
+    }
+    .reveal.fade-up {
+        transform: translateY(20px);
+    }
+    .reveal.fade-in {
+        transform: scale(0.98);
+    }
+    .reveal.active {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    .delay-75 { transition-delay: 75ms; }
+    .delay-150 { transition-delay: 150ms; }
+    .delay-200 { transition-delay: 200ms; }
+    .delay-225 { transition-delay: 225ms; }
+    .delay-300 { transition-delay: 300ms; }
+    .delay-400 { transition-delay: 400ms; }
+
+    /* =============================================
+       LUCIDE ICON MICRO-INTERACTIONS
+       ============================================= */
+    .lucide {
+        @apply transition-transform duration-300;
+    }
+    a:hover .lucide-arrow-right, button:hover .lucide-arrow-right, group-hover:hover .lucide-arrow-right {
+        transform: translateX(4px);
+    }
+    a:hover .lucide-arrow-left, button:hover .lucide-arrow-left, group-hover:hover .lucide-arrow-left {
+        transform: translateX(-4px);
+    }
+    button:hover .lucide-search, a:hover .lucide-search {
+        transform: scale(1.1);
+    }
+    button:hover .lucide-external-link, a:hover .lucide-external-link {
+        transform: translate(2px, -2px);
+    }
+    
+    /* Ensure icon stroke width is consistent (Lucide default is usually 2, but we can enforce it here if needed) */
+    .lucide {
+        stroke-width: 2;
+    }
+}
