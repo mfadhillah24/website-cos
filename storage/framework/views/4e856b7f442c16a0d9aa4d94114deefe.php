@@ -1,20 +1,18 @@
-@extends('layouts.public')
 
-@section('title', 'Beranda')
 
-@section(
+<?php $__env->startSection('title', 'Beranda'); ?>
+
+<?php $__env->startSection(
     'description',
     'UKM-IT Cyber Open Source — Wadah mahasiswa untuk belajar, berkembang, dan berkolaborasi dalam bidang teknologi informasi dan open source.'
-)
+); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-{{-- ============================================================
-    HERO
-============================================================ --}}
+
 <section class="bg-gray-200 relative overflow-hidden min-h-[88vh] flex items-center">
 
-    {{-- Background Glow --}}
+    
     <div
         class="absolute top-0 right-0 w-[600px] h-[600px]
                bg-secondary-blue/10 rounded-full blur-[120px]
@@ -27,7 +25,7 @@
                translate-y-1/2 -translate-x-1/4 pointer-events-none">
     </div>
 
-    {{-- Dot Grid --}}
+    
     <div
         class="absolute inset-0 opacity-[0.04]"
         style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 28px 28px;">
@@ -37,10 +35,10 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-            {{-- Hero Content --}}
+            
             <div>
 
-                {{-- Badge --}}
+                
                 <span
                     class="reveal fade-up inline-flex items-center gap-2
                            py-1.5 px-4 mb-8 rounded-full
@@ -53,7 +51,7 @@
                     #BRAVOCOS
                 </span>
 
-                {{-- Heading --}}
+                
                 <h1
                     class="reveal fade-up delay-75
                            text-4xl md:text-5xl lg:text-6xl
@@ -68,7 +66,7 @@
                     </span>
                 </h1>
 
-                {{-- Motto --}}
+                
                 <p
                     class="reveal fade-up delay-150
                            mb-4 text-lg font-medium
@@ -77,7 +75,7 @@
                     <i>"Open Your Mind for The Future With Open Source"</i>
                 </p>
 
-                {{-- Description --}}
+                
                 <p
                     class="reveal fade-up delay-200
                            max-w-lg mb-10
@@ -88,13 +86,13 @@
                     membangun kolaborasi, dan menciptakan solusi digital melalui semangat Open Source.
                 </p>
 
-                {{-- CTA --}}
+                
                 <div
                     class="reveal fade-up delay-300
                            flex flex-wrap items-center gap-4">
 
                     <a
-                        href="{{ route('public.tentang') }}"
+                        href="<?php echo e(route('public.tentang')); ?>"
                         class="btn-primary !px-7 !py-3 !text-sm
                                !bg-gray-500 !text-white !border-gray-800
                                hover:!bg-gray-900 hover:!border-gray-900">
@@ -103,7 +101,7 @@
                     </a>
 
                     <a
-                        href="{{ route('register') }}"
+                        href="<?php echo e(route('register')); ?>"
                         class="btn-primary !px-7 !py-3 !text-sm
                                !bg-gray-500 !text-white !border-gray-800
                                hover:!bg-gray-900 hover:!border-gray-900">
@@ -114,7 +112,7 @@
                 </div>
             </div>
 
-            {{-- Hero Visual --}}
+            
             <div
                 class="reveal fade-in delay-400
                        hidden lg:flex
@@ -125,17 +123,17 @@
                            bg-secondary rounded-full blur-3xl">
                 </div>
 
-                @if(\App\Models\Setting::get('org_logo'))
+                <?php if(\App\Models\Setting::get('org_logo')): ?>
 
                     <img
-                        src="{{ asset('images/' . \App\Models\Setting::get('org_logo')) }}"
+                        src="<?php echo e(asset('images/' . \App\Models\Setting::get('org_logo'))); ?>"
                         alt="Logo UKM-IT Cyber Open Source"
                         class="relative z-10 w-72 h-auto
                                object-contain drop-shadow-2xl
                                transition-transform duration-500
                                hover:scale-105">
 
-                @else
+                <?php else: ?>
 
                     <div
                         class="relative z-10
@@ -152,7 +150,26 @@
                                    rounded-2xl
                                    flex items-center justify-center">
 
-                            <x-lucide-layers class="w-5 h-5 text-secondary-blue" />
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-layers'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5 text-secondary-blue']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
 
                         </div>
 
@@ -166,7 +183,7 @@
 
                     </div>
 
-                @endif
+                <?php endif; ?>
 
             </div>
 
@@ -176,21 +193,19 @@
 </section>
 
 
-{{-- ============================================================
-    SAMBUTAN KETUA UMUM
-============================================================ --}}
-@if($ketuaUmum)
 
-    @php
+<?php if($ketuaUmum): ?>
+
+    <?php
         $member = $ketuaUmum->member;
         $sambutan = \App\Models\Setting::get('ketua_sambutan', '');
-    @endphp
+    ?>
 
     <section class="relative overflow-hidden bg-[#F8FAFC] py-16 md:py-24">
 
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            {{-- Header --}}
+            
             <div class="mb-12 text-center">
 
                 <span
@@ -204,7 +219,26 @@
                            tracking-wider uppercase
                            shadow-sm">
 
-                    <x-lucide-message-circle class="w-4 h-4 text-blue-600" />
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-message-circle'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 text-blue-600']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
 
                     Sambutan Ketua Umum
                 </span>
@@ -221,16 +255,16 @@
             </div>
 
 
-            {{-- Main Layout --}}
+            
             <div
                 class="flex flex-col lg:flex-row
                        items-center justify-center
                        gap-8 lg:gap-12">
 
-                {{-- Profile Card --}}
+                
                 <div class="relative w-full max-w-[320px] shrink-0">
 
-                    {{-- Decorative Shapes --}}
+                    
                     <div
                         class="absolute -bottom-6 -left-6
                                w-44 h-44
@@ -247,7 +281,7 @@
                                pointer-events-none -z-10">
                     </div>
 
-                    {{-- Card --}}
+                    
                     <div
                         class="relative z-10 w-full
                                rounded-3xl
@@ -257,10 +291,10 @@
                                shadow-xl
                                shadow-slate-200/80">
 
-                        {{-- Photo --}}
+                        
                         <div class="relative flex w-full justify-center">
 
-                            @if($member && $member->photo)
+                            <?php if($member && $member->photo): ?>
 
                                 <div
                                     class="relative w-full h-[300px]
@@ -269,13 +303,13 @@
                                            bg-slate-100">
 
                                     <img
-    src="{{ asset('images/' . $member->photo) }}"
-    alt="{{ $member->name }}"
+    src="<?php echo e(asset('images/' . $member->photo)); ?>"
+    alt="<?php echo e($member->name); ?>"
     class="w-full h-full
            object-cover
            object-center">	
 
-                                    {{-- Photo Overlay --}}
+                                    
                                     <div
                                         class="absolute inset-0
                                                bg-gradient-to-t
@@ -285,7 +319,7 @@
                                                pointer-events-none">
                                     </div>
 
-                                    {{-- Quote Badge --}}
+                                    
                                     <div
                                         class="absolute top-3 right-3
                                                flex h-11 w-11
@@ -312,7 +346,7 @@
 
                                 </div>
 
-                            @else
+                            <?php else: ?>
 
                                 <div
                                     class="flex w-full h-[300px]
@@ -320,16 +354,35 @@
                                            rounded-2xl
                                            bg-slate-100">
 
-                                    <x-lucide-user class="w-20 h-20 text-slate-300" />
+                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-user'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-20 h-20 text-slate-300']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
 
                                 </div>
 
-                            @endif
+                            <?php endif; ?>
 
                         </div>
 
 
-                        {{-- Identity --}}
+                        
                         <div class="px-4 pt-7 pb-5 text-center">
 
                             <h3
@@ -340,7 +393,8 @@
                                        tracking-tight
                                        text-[#0F2B5B]">
 
-                                {{ $member->name ?? 'Kasfillah' }}
+                                <?php echo e($member->name ?? 'Kasfillah'); ?>
+
 
                             </h3>
 
@@ -350,7 +404,8 @@
                                        leading-normal
                                        text-slate-600">
 
-                                {{ $ketuaUmum->position->name ?? 'Ketua Umum' }}
+                                <?php echo e($ketuaUmum->position->name ?? 'Ketua Umum'); ?>
+
 
                             </p>
 
@@ -371,7 +426,7 @@
                 </div>
 
 
-                {{-- Speech Card --}}
+                
                 <div class="w-full flex-1">
 
                     <div
@@ -391,21 +446,22 @@
                                    leading-relaxed
                                    text-slate-600">
 
-                            @if($sambutan)
+                            <?php if($sambutan): ?>
 
-                                @foreach(explode("\n", $sambutan) as $paragraph)
+                                <?php $__currentLoopData = explode("\n", $sambutan); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $paragraph): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
-                                    @if(trim($paragraph) !== '')
+                                    <?php if(trim($paragraph) !== ''): ?>
 
                                         <p>
-                                            {{ trim($paragraph) }}
+                                            <?php echo e(trim($paragraph)); ?>
+
                                         </p>
 
-                                    @endif
+                                    <?php endif; ?>
 
-                                @endforeach
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                            @else
+                            <?php else: ?>
 
                                 <p class="italic text-slate-400">
 
@@ -414,7 +470,7 @@
 
                                 </p>
 
-                            @endif
+                            <?php endif; ?>
 
                         </div>
 
@@ -427,17 +483,15 @@
         </div>
     </section>
 
-@endif
+<?php endif; ?>
 
 
-{{-- ============================================================
-    STATISTIK
-============================================================ --}}
+
 <section class="bg-bg-page py-12 md:py-16">
 
     <div class="section-container">
 
-        {{-- Header --}}
+        
         <div class="reveal fade-up mb-8 text-center md:mb-10">
 
             <h2
@@ -463,7 +517,7 @@
         </div>
 
 
-        @php
+        <?php
             $statsData = [
                 [
                     'value' => $stats['members'] ?? 0,
@@ -502,17 +556,18 @@
                     'icon' => '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>',
                 ],
             ];
-        @endphp
+        ?>
 
 
-        {{-- Cards --}}
+        
         <div class="grid grid-cols-2 gap-4 lg:grid-cols-4 md:gap-6">
 
-            @foreach($statsData as $i => $stat)
+            <?php $__currentLoopData = $statsData; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $stat): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
                 <div
                     class="reveal fade-up
-                           delay-{{ $i * 75 }}
+                           delay-<?php echo e($i * 75); ?>
+
                            group relative overflow-hidden
                            rounded-2xl
                            border border-gray-100
@@ -523,7 +578,7 @@
                            hover:-translate-y-1
                            hover:shadow-xl">
 
-                    {{-- Icon --}}
+                    
                     <div
                         class="relative z-10
                                mb-5
@@ -531,9 +586,12 @@
                                items-center justify-center
                                rounded-xl
                                border
-                               {{ $stat['bg'] }}
-                               {{ $stat['border'] }}
-                               {{ $stat['color'] }}
+                               <?php echo e($stat['bg']); ?>
+
+                               <?php echo e($stat['border']); ?>
+
+                               <?php echo e($stat['color']); ?>
+
                                transition-transform duration-300
                                group-hover:scale-105">
 
@@ -547,14 +605,15 @@
                             stroke-linecap="round"
                             stroke-linejoin="round">
 
-                            {!! $stat['icon'] !!}
+                            <?php echo $stat['icon']; ?>
+
 
                         </svg>
 
                     </div>
 
 
-                    {{-- Content --}}
+                    
                     <div class="relative z-10">
 
                         <div
@@ -564,7 +623,8 @@
                                    tracking-tight
                                    text-primary-navy">
 
-                            {{ $stat['value'] }}
+                            <?php echo e($stat['value']); ?>
+
 
                         </div>
 
@@ -574,7 +634,8 @@
                                    font-bold
                                    text-gray-800">
 
-                            {{ $stat['label'] }}
+                            <?php echo e($stat['label']); ?>
+
 
                         </div>
 
@@ -583,24 +644,26 @@
                                    text-[11px] md:text-xs
                                    text-gray-400">
 
-                            {{ $stat['description'] }}
+                            <?php echo e($stat['description']); ?>
+
 
                         </div>
 
                     </div>
 
 
-                    {{-- Bottom Accent --}}
+                    
                     <div
                         class="absolute bottom-0 left-0 right-0 h-1
-                               {{ $stat['bg'] }}
+                               <?php echo e($stat['bg']); ?>
+
                                transition-all duration-300
                                group-hover:h-1.5">
                     </div>
 
                 </div>
 
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
         </div>
 
@@ -608,16 +671,14 @@
 </section>
 
 
-{{-- ============================================================
-    TENTANG KAMI
-============================================================ --}}
+
 <section class="section-spacing">
 
     <div class="section-container">
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-            {{-- Content --}}
+            
             <div class="reveal fade-up">
 
                 <span
@@ -650,34 +711,54 @@
 
                     <p>
 
-                        {{ \App\Models\Setting::get(
+                        <?php echo e(\App\Models\Setting::get(
                             'org_description',
                             'UKM-IT Cyber Open Source adalah Unit Kegiatan Mahasiswa yang berfokus pada pengembangan kemampuan di bidang teknologi informasi.'
-                        ) }}
+                        )); ?>
+
 
                     </p>
 
                 </div>
 
                 <a
-                    href="{{ route('public.tentang') }}"
+                    href="<?php echo e(route('public.tentang')); ?>"
                     class="btn-primary
                            !px-6 !py-3 !text-sm
                            shadow-sm">
 
                     Baca Profil Lengkap
 
-                    <x-lucide-arrow-right class="w-5 h-5" />
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-arrow-right'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
 
                 </a>
 
             </div>
 
 
-            {{-- Features --}}
+            
             <div class="grid grid-cols-2 gap-5">
 
-                @php
+                <?php
                     $features = [
                         [
                             'title' => 'Open Source',
@@ -712,28 +793,30 @@
                             'offset' => false,
                         ],
                     ];
-                @endphp
+                ?>
 
 
-                @foreach($features as $i => $feature)
+                <?php $__currentLoopData = $features; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $feature): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
                     <div
                         class="reveal fade-up
-                               delay-{{ $i * 75 }}
+                               delay-<?php echo e($i * 75); ?>
+
                                ui-card
                                flex flex-col items-start gap-3
                                p-5
                                text-left
                                transition-shadow duration-200
                                hover:shadow-md
-                               {{ $feature['offset'] ? 'mt-6' : '' }}">
+                               <?php echo e($feature['offset'] ? 'mt-6' : ''); ?>">
 
                         <div
                             class="flex h-11 w-11 shrink-0
                                    items-center justify-center
                                    rounded-xl
-                                   {{ $feature['bg'] }}
-                                   {{ $feature['color'] }}">
+                                   <?php echo e($feature['bg']); ?>
+
+                                   <?php echo e($feature['color']); ?>">
 
                             <svg
                                 width="22"
@@ -745,7 +828,8 @@
                                 stroke-linecap="round"
                                 stroke-linejoin="round">
 
-                                {!! $feature['icon'] !!}
+                                <?php echo $feature['icon']; ?>
+
 
                             </svg>
 
@@ -759,7 +843,8 @@
                                        font-bold
                                        text-gray-900">
 
-                                {{ $feature['title'] }}
+                                <?php echo e($feature['title']); ?>
+
 
                             </h3>
 
@@ -768,7 +853,8 @@
                                        leading-relaxed
                                        text-gray-500">
 
-                                {{ $feature['desc'] }}
+                                <?php echo e($feature['desc']); ?>
+
 
                             </p>
 
@@ -776,7 +862,7 @@
 
                     </div>
 
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
             </div>
 
@@ -786,10 +872,8 @@
 </section>
 
 
-{{-- ============================================================
-    DIVISI
-============================================================ --}}
-@if($divisions->count() > 0)
+
+<?php if($divisions->count() > 0): ?>
 
     <section
         class="section-spacing
@@ -798,7 +882,7 @@
 
         <div class="section-container">
 
-            {{-- Header --}}
+            
             <div
                 class="reveal fade-up
                        mx-auto mb-14
@@ -838,19 +922,20 @@
             </div>
 
 
-            {{-- Division Cards --}}
+            
             <div
                 class="grid grid-cols-1
                        gap-6
                        md:grid-cols-2
                        lg:grid-cols-3">
 
-                @foreach($divisions as $i => $division)
+                <?php $__currentLoopData = $divisions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $division): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
                     <a
-                        href="{{ route('public.divisi.show', $division->slug) }}"
+                        href="<?php echo e(route('public.divisi.show', $division->slug)); ?>"
                         class="reveal fade-up
-                               delay-{{ ($i % 3) * 75 }}
+                               delay-<?php echo e(($i % 3) * 75); ?>
+
                                ui-card group block
                                border-gray-100
                                p-6
@@ -858,7 +943,7 @@
                                hover:border-secondary-blue/30
                                hover:shadow-md">
 
-                        {{-- Icon --}}
+                        
                         <div
                             class="mb-5
                                    flex h-12 w-12
@@ -872,11 +957,30 @@
                                    group-hover:bg-primary-navy
                                    group-hover:text-white">
 
-                            <x-lucide-network class="w-5 h-5" />
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-network'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
 
                         </div>
 
-                        {{-- Title --}}
+                        
                         <h3
                             class="mb-2
                                    text-base font-bold
@@ -884,11 +988,12 @@
                                    transition-colors duration-200
                                    group-hover:text-secondary-blue">
 
-                            {{ $division->name }}
+                            <?php echo e($division->name); ?>
+
 
                         </h3>
 
-                        {{-- Description --}}
+                        
                         <p
                             class="mb-5
                                    line-clamp-2
@@ -896,11 +1001,12 @@
                                    leading-relaxed
                                    text-gray-400">
 
-                            {{ $division->description }}
+                            <?php echo e($division->description); ?>
+
 
                         </p>
 
-                        {{-- Link --}}
+                        
                         <div
                             class="flex items-center gap-1.5
                                    text-xs font-semibold
@@ -910,32 +1016,49 @@
 
                             Pelajari lebih lanjut
 
-                            <x-lucide-arrow-right class="w-5 h-5" />
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-arrow-right'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
 
                         </div>
 
                     </a>
 
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
             </div>
 
         </div>
     </section>
 
-@endif
+<?php endif; ?>
 
 
-{{-- ============================================================
-    ARTIKEL / BERITA
-============================================================ --}}
-@if($latestArticles->count() > 0)
+
+<?php if($latestArticles->count() > 0): ?>
 
     <section class="section-spacing">
 
         <div class="section-container">
 
-            {{-- Header --}}
+            
             <div
                 class="reveal fade-up
                        mb-12
@@ -970,56 +1093,76 @@
                 </div>
 
                 <a
-                    href="{{ route('public.berita') }}"
+                    href="<?php echo e(route('public.berita')); ?>"
                     class="btn-secondary
                            !text-sm
                            flex-shrink-0">
 
                     Lihat Semua Berita
 
-                    <x-lucide-arrow-right class="w-5 h-5" />
+                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-arrow-right'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
 
                 </a>
 
             </div>
 
 
-            {{-- Article Cards --}}
+            
             <div
                 class="grid grid-cols-1
                        gap-7
                        md:grid-cols-2
                        lg:grid-cols-3">
 
-                @foreach($latestArticles as $i => $article)
+                <?php $__currentLoopData = $latestArticles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $article): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 
                     <a
-                        href="{{ route('public.berita.show', $article->slug) }}"
+                        href="<?php echo e(route('public.berita.show', $article->slug)); ?>"
                         class="reveal fade-up
-                               delay-{{ ($i % 3) * 75 }}
+                               delay-<?php echo e(($i % 3) * 75); ?>
+
                                ui-card group
                                flex flex-col
                                overflow-hidden
                                transition-all duration-200
                                hover:shadow-md">
 
-                        {{-- Thumbnail --}}
+                        
                         <div
                             class="relative aspect-video
                                    overflow-hidden
                                    bg-gray-100">
 
-                            @if($article->thumbnail)
+                            <?php if($article->thumbnail): ?>
 
                                 <img
-                                    src="{{ asset('images/' . $article->thumbnail) }}"
-                                    alt="{{ $article->title }}"
+                                    src="<?php echo e(asset('images/' . $article->thumbnail)); ?>"
+                                    alt="<?php echo e($article->title); ?>"
                                     class="w-full h-full
                                            object-cover
                                            transition-transform duration-500
                                            group-hover:scale-105">
 
-                            @else
+                            <?php else: ?>
 
                                 <div
                                     class="flex w-full h-full
@@ -1028,15 +1171,34 @@
                                            from-gray-100 to-gray-200
                                            text-gray-300">
 
-                                    <x-lucide-image class="w-5 h-5" />
+                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-image'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
 
                                 </div>
 
-                            @endif
+                            <?php endif; ?>
 
 
-                            {{-- Category --}}
-                            @if($article->category)
+                            
+                            <?php if($article->category): ?>
 
                                 <span
                                     class="absolute top-3 left-3
@@ -1048,26 +1210,28 @@
                                            shadow-sm
                                            backdrop-blur">
 
-                                    {{ $article->category->name }}
+                                    <?php echo e($article->category->name); ?>
+
 
                                 </span>
 
-                            @endif
+                            <?php endif; ?>
 
                         </div>
 
 
-                        {{-- Article Content --}}
+                        
                         <div class="flex flex-grow flex-col p-5">
 
-                            {{-- Meta --}}
+                            
                             <p
                                 class="mb-3
                                        flex items-center gap-2
                                        text-xs text-gray-400">
 
                                 <span>
-                                    {{ $article->published_at?->translatedFormat('d M Y') ?? 'Draft' }}
+                                    <?php echo e($article->published_at?->translatedFormat('d M Y') ?? 'Draft'); ?>
+
                                 </span>
 
                                 <span
@@ -1077,13 +1241,14 @@
                                 </span>
 
                                 <span>
-                                    {{ $article->author?->name ?? 'Admin' }}
+                                    <?php echo e($article->author?->name ?? 'Admin'); ?>
+
                                 </span>
 
                             </p>
 
 
-                            {{-- Title --}}
+                            
                             <h3
                                 class="mb-2
                                        line-clamp-2
@@ -1093,12 +1258,13 @@
                                        transition-colors duration-200
                                        group-hover:text-secondary-blue">
 
-                                {{ $article->title }}
+                                <?php echo e($article->title); ?>
+
 
                             </h3>
 
 
-                            {{-- Excerpt --}}
+                            
                             <p
                                 class="flex-grow
                                        line-clamp-3
@@ -1106,12 +1272,13 @@
                                        leading-relaxed
                                        text-gray-400">
 
-                                {{ $article->excerpt }}
+                                <?php echo e($article->excerpt); ?>
+
 
                             </p>
 
 
-                            {{-- Read More --}}
+                            
                             <div
                                 class="mt-4
                                        flex items-center gap-1.5
@@ -1124,7 +1291,26 @@
 
                                 Baca Selengkapnya
 
-                                <x-lucide-arrow-right class="w-5 h-5" />
+                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-arrow-right'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
 
                             </div>
 
@@ -1132,31 +1318,29 @@
 
                     </a>
 
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
             </div>
 
         </div>
     </section>
 
-@endif
+<?php endif; ?>
 
 
-{{-- ============================================================
-    CTA BANNER
-============================================================ --}}
+
 <section
     class="relative overflow-hidden
            bg-primary-navy
            py-16 md:py-20">
 
-    {{-- Dot Grid --}}
+    
     <div
         class="absolute inset-0 opacity-[0.05]"
         style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 24px 24px;">
     </div>
 
-    {{-- Glow --}}
+    
     <div
         class="absolute top-0 right-0
                w-96 h-96
@@ -1209,7 +1393,7 @@
         </p>
 
 
-        {{-- CTA Buttons --}}
+        
         <div
             class="flex flex-wrap
                    items-center
@@ -1217,7 +1401,7 @@
                    gap-4">
 
             <a
-                href="{{ route('register') }}"
+                href="<?php echo e(route('register')); ?>"
                 class="btn-primary
                        !px-8 !py-3 !text-sm
                        bg-secondary-blue
@@ -1230,7 +1414,7 @@
             </a>
 
             <a
-                href="{{ route('public.kontak') }}"
+                href="<?php echo e(route('public.kontak')); ?>"
                 class="btn-secondary
                        !px-8 !py-3 !text-sm
                        !border-white/20
@@ -1247,17 +1431,15 @@
     </div>
 </section>
 
-{{-- ============================================================
-    PENGUMUMAN POPUP (MODAL)
-============================================================ --}}
-@if(isset($announcement) && $announcement)
+
+<?php if(isset($announcement) && $announcement): ?>
     <div id="announcement-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
-        {{-- Backdrop --}}
+        
         <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-sm transition-opacity opacity-0" id="announcement-backdrop"></div>
         
-        {{-- Modal Content --}}
+        
         <div class="relative w-full max-w-lg scale-95 opacity-0 transition-all duration-300 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100" id="announcement-card">
-            {{-- Header/Banner --}}
+            
             <div class="bg-gradient-to-r from-primary-navy to-secondary-blue px-6 py-4 flex items-center justify-between">
                 <div class="flex items-center gap-2 text-white">
                     <svg class="w-5 h-5 text-white/90" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
@@ -1268,10 +1450,10 @@
                 </button>
             </div>
             
-            {{-- Body --}}
+            
             <div class="p-6 md:p-8 text-center sm:text-left">
-                <h4 class="text-xl md:text-2xl font-bold text-gray-900 mb-3">{{ $announcement->title }}</h4>
-                <div class="text-sm text-gray-500 mb-6 leading-relaxed whitespace-pre-line text-justify">{{ $announcement->content }}</div>
+                <h4 class="text-xl md:text-2xl font-bold text-gray-900 mb-3"><?php echo e($announcement->title); ?></h4>
+                <div class="text-sm text-gray-500 mb-6 leading-relaxed whitespace-pre-line text-justify"><?php echo e($announcement->content); ?></div>
                 
                 <div class="flex justify-end">
                     <button id="btn-mengerti" class="w-full sm:w-auto btn-primary !px-6 !py-2.5 !text-sm bg-primary-navy hover:bg-gray-800 shadow-md">Saya Mengerti</button>
@@ -1280,10 +1462,10 @@
         </div>
     </div>
 
-    @push('scripts')
+    <?php $__env->startPush('scripts'); ?>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const announcementId = 'announcement_{{ $announcement->id }}';
+            const announcementId = 'announcement_<?php echo e($announcement->id); ?>';
             
             // Periksa apakah user sudah pernah menutup pengumuman ini
             if (!sessionStorage.getItem(announcementId)) {
@@ -1335,7 +1517,8 @@
             }
         });
     </script>
-    @endpush
-@endif
+    <?php $__env->stopPush(); ?>
+<?php endif; ?>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.public', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\SEMESTER 4\PEMROGRAMAN WEB 2\LARAVELL\website-cos\resources\views/public/home.blade.php ENDPATH**/ ?>
