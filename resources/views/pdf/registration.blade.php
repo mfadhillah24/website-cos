@@ -157,7 +157,7 @@
     </div>
 
     <div class="footer">
-        Dicetak secara otomatis dari Sistem Informasi UKM-IT COS pada {{ now()->format('d/m/Y H:i:s') }}
+       Open Your Mind for The Future With Open Source
     </div>
 
 </body>

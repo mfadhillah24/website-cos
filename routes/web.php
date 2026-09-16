@@ -175,6 +175,11 @@ Route::prefix('admin')
         Route::resource('announcements', AnnouncementController::class)->names('announcements')->except(['show']);
 
         // Pendaftaran
+        // ⚠️ Route export HARUS di atas Route::resource agar tidak tertangkap sebagai parameter {registration}
+        Route::get('registrations/export-pdf', [AdminRegistrationController::class, 'exportPdf'])
+            ->name('registrations.export-pdf');
+        Route::get('registrations/{registration}/export-single-pdf', [AdminRegistrationController::class, 'exportSinglePdf'])
+            ->name('registrations.export-single-pdf');
         Route::resource('registrations', AdminRegistrationController::class)->only(['index', 'show', 'destroy'])->names('registrations');
 
         // Laporan Divisi
@@ -274,16 +279,16 @@ Route::prefix('admin')
     });
 
 // Serve storage files via /file/ path (pengganti symlink di hosting)
-// // Menggunakan /file/ bukan /storage/ untuk menghindari blokir Apache di shared hosting
-// Route::get('/file/{path}', function (string $path) {
-//     $fullPath = storage_path('app/public/' . $path);
+// Menggunakan /file/ bukan /storage/ untuk menghindari blokir Apache di shared hosting
+Route::get('/file/{path}', function (string $path) {
+    $fullPath = storage_path('app/public/' . $path);
 
-//     if (!file_exists($fullPath)) {
-//         abort(404);
-//     }
+    if (!file_exists($fullPath)) {
+        abort(404);
+    }
 
-//     return response()->file($fullPath);
-// })->where('path', '.*')->name('file.serve');
+    return response()->file($fullPath);
+})->where('path', '.*')->name('file.serve');
 
 // // ⚠️ ROUTE SEMENTARA - HAPUS SETELAH DIPAKAI
 // // Jalankan migration di hosting via browser
