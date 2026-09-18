@@ -31,7 +31,7 @@ class RegistrationController extends Controller
         $registration = Registration::create($data);
 
         NotificationService::sendToRole(
-            ['Ketua Umum', 'Sekretaris'],
+            ['Ketua Umum', 'Sekretaris', 'Humas'],
             'Calon Anggota Baru',
             "{$registration->name} mendaftar sebagai calon anggota baru dan menunggu pemeriksaan.",
             'member_registration',

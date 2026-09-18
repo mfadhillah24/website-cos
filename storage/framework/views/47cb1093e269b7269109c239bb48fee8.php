@@ -37,121 +37,152 @@
         $instagram = \App\Models\Setting::get('social_instagram');
         $github    = \App\Models\Setting::get('social_github');
         $email     = \App\Models\Setting::get('social_email');
+        $isTentangActive   = request()->routeIs('public.tentang') || request()->routeIs('public.organisasi') || request()->routeIs('public.divisi') || request()->routeIs('public.divisi.show');
+        $isAktivitasActive = request()->routeIs('public.kegiatan') || request()->routeIs('public.kegiatan.show') || request()->routeIs('public.berita') || request()->routeIs('public.berita.show') || request()->routeIs('public.galeri');
     ?>
 
-    <nav class="pub-navbar" id="pub-navbar">
-        <div class="section-container h-full flex items-center justify-between">
+    <nav class="pub-navbar" id="pub-navbar" role="navigation" aria-label="Navigasi utama"
+         style="background:rgba(255,255,255,0.95)!important;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);">
+        <div class="section-container h-full flex items-center justify-between gap-4">
+
             
-            <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-3 no-underline">
+            <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-2.5 no-underline shrink-0" aria-label="Beranda <?php echo e($orgName); ?>">
                 <?php if($orgLogo): ?>
-                    <img src="<?php echo e(asset('images/' . $orgLogo)); ?>" alt="<?php echo e($orgName); ?>" class="h-8 w-auto object-contain">
+                    <img src="<?php echo e(asset('images/' . $orgLogo)); ?>" alt="Logo <?php echo e($orgName); ?>" class="h-8 w-auto object-contain">
                 <?php else: ?>
-                    <div class="w-8 h-8 bg-white rounded flex items-center justify-center">
-                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
-<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('lucide-layers'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?>
-                    </div>
+                    <img src="<?php echo e(asset('images/logo.png')); ?>" alt="Logo COS" class="h-8 w-auto object-contain">
                 <?php endif; ?>
-                <span class="text-base font-bold text-white tracking-tight"><?php echo e($orgName); ?></span>
+                <span class="text-xs sm:text-sm font-bold text-primary-navy tracking-tight leading-tight max-w-[140px] sm:max-w-none"><?php echo e($orgName); ?></span>
             </a>
 
             
-            <div id="pub-nav-links" class="hidden lg:flex items-center gap-1">
-                <?php
-                    $navLinks = [
-                        ['href' => route('home'),              'label' => 'Beranda',   'route' => 'home'],
-                        ['href' => route('public.tentang'),    'label' => 'Tentang',   'route' => 'public.tentang'],
-                        ['href' => route('public.organisasi'), 'label' => 'Organisasi','route' => 'public.organisasi'],
-                        ['href' => route('public.divisi'),     'label' => 'Divisi',    'route' => 'public.divisi'],
-                        ['href' => route('public.kegiatan'),   'label' => 'Kegiatan',  'route' => 'public.kegiatan'],
-                        ['href' => route('public.berita'),     'label' => 'Berita',    'route' => 'public.berita'],
-                        ['href' => route('public.galeri'),     'label' => 'Galeri',    'route' => 'public.galeri'],
-                        ['href' => route('public.kontak'),     'label' => 'Kontak',    'route' => 'public.kontak'],
-                    ];
-                ?>
+            <div class="hidden lg:flex items-center gap-0.5">
 
-                <?php $__currentLoopData = $navLinks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $link): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <?php $isActive = request()->routeIs($link['route']) || (isset($link['route_prefix']) && request()->routeIs($link['route_prefix'].'.*')); ?>
-                    <a href="<?php echo e($link['href']); ?>" class="nav-link-pub <?php echo e($isActive ? 'active' : ''); ?>">
-                        <?php echo e($link['label']); ?>
-
-                    </a>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <a href="<?php echo e(route('home')); ?>" class="nav-link-pub <?php echo e(request()->routeIs('home') ? 'active' : ''); ?>">Beranda</a>
 
                 
-                <div class="ml-4 flex items-center gap-3">
+                <div class="nav-dropdown-wrap" id="dropdown-tentang-wrap">
+                    <button id="dropdown-tentang-btn"
+                            class="nav-dropdown-trigger <?php echo e($isTentangActive ? 'active' : ''); ?>"
+                            aria-expanded="false" aria-haspopup="true" aria-controls="dropdown-tentang-panel" type="button">
+                        Tentang
+                        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 6 8 10 12 6"/></svg>
+                    </button>
+                    <div id="dropdown-tentang-panel" class="nav-dropdown-panel" role="menu" aria-labelledby="dropdown-tentang-btn">
+                        <a href="<?php echo e(route('public.tentang')); ?>" role="menuitem" class="nav-dropdown-item <?php echo e(request()->routeIs('public.tentang') ? 'active' : ''); ?>">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                            Tentang COS
+                        </a>
+                        <a href="<?php echo e(route('public.organisasi')); ?>" role="menuitem" class="nav-dropdown-item <?php echo e(request()->routeIs('public.organisasi') ? 'active' : ''); ?>">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Organisasi
+                        </a>
+                        <a href="<?php echo e(route('public.divisi')); ?>" role="menuitem" class="nav-dropdown-item <?php echo e(request()->routeIs('public.divisi') || request()->routeIs('public.divisi.show') ? 'active' : ''); ?>">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                            Divisi
+                        </a>
+                    </div>
+                </div>
+
+                
+                <div class="nav-dropdown-wrap" id="dropdown-aktivitas-wrap">
+                    <button id="dropdown-aktivitas-btn"
+                            class="nav-dropdown-trigger <?php echo e($isAktivitasActive ? 'active' : ''); ?>"
+                            aria-expanded="false" aria-haspopup="true" aria-controls="dropdown-aktivitas-panel" type="button">
+                        Aktivitas
+                        <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 6 8 10 12 6"/></svg>
+                    </button>
+                    <div id="dropdown-aktivitas-panel" class="nav-dropdown-panel" role="menu" aria-labelledby="dropdown-aktivitas-btn">
+                        <a href="<?php echo e(route('public.kegiatan')); ?>" role="menuitem" class="nav-dropdown-item <?php echo e(request()->routeIs('public.kegiatan') || request()->routeIs('public.kegiatan.show') ? 'active' : ''); ?>">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Kegiatan
+                        </a>
+                        <a href="<?php echo e(route('public.berita')); ?>" role="menuitem" class="nav-dropdown-item <?php echo e(request()->routeIs('public.berita') || request()->routeIs('public.berita.show') ? 'active' : ''); ?>">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            Berita
+                        </a>
+                        <a href="<?php echo e(route('public.galeri')); ?>" role="menuitem" class="nav-dropdown-item <?php echo e(request()->routeIs('public.galeri') ? 'active' : ''); ?>">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            Galeri
+                        </a>
+                    </div>
+                </div>
+
+                <a href="<?php echo e(route('public.kontak')); ?>" class="nav-link-pub <?php echo e(request()->routeIs('public.kontak') ? 'active' : ''); ?>">Kontak</a>
+
+                <div class="ml-3 flex items-center gap-2">
                     <?php if(auth()->guard()->check()): ?>
-                        <a href="<?php echo e(route('admin.dashboard')); ?>" class="btn-secondary !py-1.5 !text-sm">
-                            Dashboard
-                        </a>
+                        <a href="<?php echo e(route('admin.dashboard')); ?>" class="btn-secondary !py-1.5 !text-sm">Dashboard</a>
                     <?php else: ?>
-                        <a href="<?php echo e(route('login')); ?>" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">
-                            Login
-                        </a>
-                        <a href="<?php echo e(route('register')); ?>" class="btn-secondary !py-1.5 !text-sm">
-                            Daftar
-                        </a>
+                        <a href="<?php echo e(route('login')); ?>" class="nav-link-pub">Login</a>
+                        <a href="<?php echo e(route('register')); ?>" class="btn-primary !py-1.5 !text-sm !rounded-lg">Daftar</a>
                     <?php endif; ?>
                 </div>
             </div>
 
             
-            <button id="mobile-menu-btn" class="lg:hidden p-2 text-white" aria-label="Menu">
-                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
-<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('lucide-menu'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?>
+            <button id="mobile-menu-btn"
+                    class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary-navy/20"
+                    aria-label="Buka atau tutup menu navigasi"
+                    aria-expanded="false"
+                    aria-controls="mobile-menu-panel"
+                    type="button">
+                <div class="hamburger-icon" id="hamburger-icon" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </button>
         </div>
 
         
-        <div id="mobile-menu" class="hidden border-t border-white/10 bg-primary-navy shadow-lg">
-            <div class="section-container py-4 flex flex-col gap-2">
-                <?php $__currentLoopData = $navLinks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $link): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <a href="<?php echo e($link['href']); ?>" class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white rounded-md">
-                        <?php echo e($link['label']); ?>
+        <div id="mobile-menu-panel" class="mobile-nav-panel lg:hidden">
+            <div class="section-container py-3 pb-5 flex flex-col gap-1">
 
-                    </a>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                <div class="mt-4 flex gap-3 flex-wrap">
+                <a href="<?php echo e(route('home')); ?>" class="mobile-nav-link <?php echo e(request()->routeIs('home') ? 'active' : ''); ?>">Beranda</a>
+
+                
+                <div>
+                    <button class="mobile-accordion-trigger"
+                            id="mob-acc-tentang-btn"
+                            aria-expanded="<?php echo e($isTentangActive ? 'true' : 'false'); ?>"
+                            aria-controls="mob-acc-tentang" type="button">
+                        <span>Tentang</span>
+                        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div id="mob-acc-tentang" class="mobile-accordion-content <?php echo e($isTentangActive ? 'open' : ''); ?>">
+                        <a href="<?php echo e(route('public.tentang')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.tentang') ? 'active' : ''); ?>">Tentang COS</a>
+                        <a href="<?php echo e(route('public.organisasi')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.organisasi') ? 'active' : ''); ?>">Organisasi</a>
+                        <a href="<?php echo e(route('public.divisi')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.divisi') || request()->routeIs('public.divisi.show') ? 'active' : ''); ?>">Divisi</a>
+                    </div>
+                </div>
+
+                
+                <div>
+                    <button class="mobile-accordion-trigger"
+                            id="mob-acc-aktivitas-btn"
+                            aria-expanded="<?php echo e($isAktivitasActive ? 'true' : 'false'); ?>"
+                            aria-controls="mob-acc-aktivitas" type="button">
+                        <span>Aktivitas</span>
+                        <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div id="mob-acc-aktivitas" class="mobile-accordion-content <?php echo e($isAktivitasActive ? 'open' : ''); ?>">
+                        <a href="<?php echo e(route('public.kegiatan')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.kegiatan') || request()->routeIs('public.kegiatan.show') ? 'active' : ''); ?>">Kegiatan</a>
+                        <a href="<?php echo e(route('public.berita')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.berita') || request()->routeIs('public.berita.show') ? 'active' : ''); ?>">Berita</a>
+                        <a href="<?php echo e(route('public.galeri')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.galeri') ? 'active' : ''); ?>">Galeri</a>
+                    </div>
+                </div>
+
+                <a href="<?php echo e(route('public.kontak')); ?>" class="mobile-nav-link <?php echo e(request()->routeIs('public.kontak') ? 'active' : ''); ?>">Kontak</a>
+
+                <div class="h-px bg-gray-100 my-2 mx-1"></div>
+
+                <div class="flex gap-2 flex-wrap px-1 pb-1">
                     <?php if(auth()->guard()->check()): ?>
-                        <a href="<?php echo e(route('admin.dashboard')); ?>" class="btn-secondary flex-1 text-center">Dashboard</a>
+                        <a href="<?php echo e(route('admin.dashboard')); ?>" class="btn-secondary flex-1 text-center !text-sm">Dashboard</a>
                     <?php else: ?>
-                        <a href="<?php echo e(route('login')); ?>" class="btn-primary border border-white/20 flex-1 text-center">Login</a>
-                        <a href="<?php echo e(route('register')); ?>" class="btn-secondary flex-1 text-center">Daftar</a>
+                        <a href="<?php echo e(route('login')); ?>" class="btn-secondary flex-1 text-center !text-sm">Login</a>
+                        <a href="<?php echo e(route('register')); ?>" class="btn-primary flex-1 text-center !text-sm">Daftar</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -159,7 +190,7 @@
     </nav>
 
     
-    <main class="flex-grow pt-[72px]">
+    <main class="flex-grow pt-[68px]">
         <?php echo $__env->yieldContent('content'); ?>
     </main>
 
@@ -173,28 +204,7 @@
                         <?php if($orgLogo): ?>
                             <img src="<?php echo e(asset('images/' . $orgLogo)); ?>" alt="<?php echo e($orgName); ?>" class="h-8 object-contain">
                         <?php else: ?>
-                            <div class="w-8 h-8 bg-primary-navy rounded flex items-center justify-center">
-                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
-<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('lucide-layers'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?>
-                            </div>
+                            <img src="<?php echo e(asset('images/logo.png')); ?>" alt="Logo COS" class="h-8 object-contain">
                         <?php endif; ?>
                         <span class="font-bold text-gray-900"><?php echo e($orgName); ?></span>
                     </a>
@@ -202,7 +212,6 @@
                         <?php echo e(\App\Models\Setting::get('org_description', 'Wadah mahasiswa untuk belajar, berkembang, dan berkolaborasi dalam bidang teknologi informasi dan open source.')); ?>
 
                     </p>
-                    
                     <div class="flex gap-3">
                         <?php if($instagram): ?>
                         <a href="<?php echo e($instagram); ?>" target="_blank" rel="noopener" class="w-10 h-10 rounded-lg border border-gray-200 flex items-center justify-center text-gray-500 hover:text-secondary-blue hover:border-secondary-blue hover:bg-secondary-blue/5 transition-all">
@@ -306,25 +315,85 @@
     </footer>
 
     <script>
-        // Navbar scroll effect
-        const navbar = document.getElementById('pub-navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 10) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
+    (function () {
+        'use strict';
+
+        // ── Navbar scroll effect ──
+        var navbar  = document.getElementById('pub-navbar');
+        var ticking = false;
+        function updateNav() {
+            navbar.classList.toggle('scrolled', window.scrollY > 12);
+            ticking = false;
+        }
+        window.addEventListener('scroll', function () {
+            if (!ticking) { requestAnimationFrame(updateNav); ticking = true; }
+        }, { passive: true });
+
+        // ── Desktop dropdowns ──
+        var dropPairs = [
+            { btn: 'dropdown-tentang-btn',   panel: 'dropdown-aktivitas-panel' },
+            { btn: 'dropdown-tentang-btn',   panel: 'dropdown-tentang-panel' },
+            { btn: 'dropdown-aktivitas-btn', panel: 'dropdown-aktivitas-panel' }
+        ];
+
+        function closeAllDropdowns() {
+            ['dropdown-tentang-btn','dropdown-aktivitas-btn'].forEach(function (id) {
+                var b = document.getElementById(id);
+                if (b) b.setAttribute('aria-expanded', 'false');
+            });
+            ['dropdown-tentang-panel','dropdown-aktivitas-panel'].forEach(function (id) {
+                var p = document.getElementById(id);
+                if (p) p.classList.remove('open');
+            });
+        }
+
+        ['tentang','aktivitas'].forEach(function (key) {
+            var btn   = document.getElementById('dropdown-' + key + '-btn');
+            var panel = document.getElementById('dropdown-' + key + '-panel');
+            if (!btn || !panel) return;
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var wasOpen = panel.classList.contains('open');
+                closeAllDropdowns();
+                if (!wasOpen) {
+                    btn.setAttribute('aria-expanded', 'true');
+                    panel.classList.add('open');
+                }
+            });
         });
 
-        // Mobile menu toggle
-        const mobileBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+        document.addEventListener('click', closeAllDropdowns);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeAllDropdowns();
         });
+
+        // ── Mobile menu ──
+        var mobileBtn   = document.getElementById('mobile-menu-btn');
+        var mobilePanel = document.getElementById('mobile-menu-panel');
+        var hamIcon     = document.getElementById('hamburger-icon');
+
+        mobileBtn.addEventListener('click', function () {
+            var open = mobilePanel.classList.contains('open');
+            mobilePanel.classList.toggle('open', !open);
+            hamIcon.classList.toggle('open', !open);
+            mobileBtn.setAttribute('aria-expanded', String(!open));
+        });
+
+        // ── Mobile accordion ──
+        ['tentang','aktivitas'].forEach(function (key) {
+            var btn = document.getElementById('mob-acc-' + key + '-btn');
+            var con = document.getElementById('mob-acc-' + key);
+            if (!btn || !con) return;
+            btn.addEventListener('click', function () {
+                var open = con.classList.contains('open');
+                con.classList.toggle('open', !open);
+                btn.setAttribute('aria-expanded', String(!open));
+            });
+        });
+
+    }());
     </script>
 
     <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
-</html>
-<?php /**PATH D:\SEMESTER 4\PEMROGRAMAN WEB 2\LARAVELL\website-cos\resources\views/layouts/public.blade.php ENDPATH**/ ?>
+</html><?php /**PATH D:\SEMESTER 4\PEMROGRAMAN WEB 2\LARAVELL\website-cos\resources\views/layouts/public.blade.php ENDPATH**/ ?>

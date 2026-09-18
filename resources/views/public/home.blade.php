@@ -10,167 +10,539 @@
 @section('content')
 
 {{-- ============================================================
-    HERO
+    HERO — INTERACTIVE LINUX TERMINAL
 ============================================================ --}}
-<section class="bg-gray-200 relative overflow-hidden min-h-[88vh] flex items-center">
+<section class="relative overflow-hidden min-h-[90vh] flex items-center"
+         style="background: linear-gradient(135deg, #F0F4FA 0%, #EEF2F9 50%, #F5F7FA 100%);"
+         id="hero-section">
 
-    {{-- Background Glow --}}
-    <div
-        class="absolute top-0 right-0 w-[600px] h-[600px]
-               bg-secondary-blue/10 rounded-full blur-[120px]
-               -translate-y-1/2 translate-x-1/3 pointer-events-none">
+    {{-- Dot Grid Background --}}
+    <div class="absolute inset-0 opacity-[0.045]"
+         style="background-image: radial-gradient(circle, #071A52 1px, transparent 1px); background-size: 26px 26px; pointer-events:none;">
     </div>
 
-    <div
-        class="absolute bottom-0 left-0 w-[400px] h-[400px]
-               bg-secondary-blue/5 rounded-full blur-[100px]
-               translate-y-1/2 -translate-x-1/4 pointer-events-none">
+    {{-- Soft blue glow top-right --}}
+    <div class="absolute top-0 right-0 w-[700px] h-[700px] pointer-events-none"
+         style="background: radial-gradient(ellipse at 70% 30%, rgba(30,136,229,0.10) 0%, transparent 65%); transform: translate(20%, -30%);">
     </div>
 
-    {{-- Dot Grid --}}
-    <div
-        class="absolute inset-0 opacity-[0.04]"
-        style="background-image: radial-gradient(circle, #fff 1px, transparent 1px); background-size: 28px 28px;">
+    {{-- Soft navy glow bottom-left --}}
+    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] pointer-events-none"
+         style="background: radial-gradient(ellipse at 30% 70%, rgba(7,26,82,0.07) 0%, transparent 65%); transform: translate(-20%, 30%);">
     </div>
 
-    <div class="section-container relative z-10 w-full py-20 md:py-28">
+    <div class="section-container relative z-10 w-full py-20 md:py-24 lg:py-28">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-16 items-center">
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {{-- ── LEFT: Identity + CTA ── --}}
+            <div class="order-1">
 
-            {{-- Hero Content --}}
-            <div>
-
-                {{-- Badge --}}
-                <span
-                    class="reveal fade-up inline-flex items-center gap-2
-                           py-1.5 px-4 mb-8 rounded-full
-                           bg-white/5 border border-white/10
-                           text-gray-700 text-xs font-medium
-                           tracking-widest uppercase">
-
-                    <span class="w-2.5 h-2.5 rounded-full bg-secondary-blue"></span>
-
-                    #BRAVOCOS
-                </span>
+                {{-- Eyebrow Badge --}}
+                <div class="reveal fade-up inline-flex items-center gap-2 mb-8
+                            py-1.5 px-4 rounded-full
+                            bg-white/80 border border-primary-navy/10
+                            backdrop-blur-sm shadow-sm">
+                    <span class="w-2 h-2 rounded-full bg-secondary-blue animate-pulse"></span>
+                    <span class="text-xs font-semibold text-primary-navy tracking-widest uppercase">#BRAVOCOS</span>
+                </div>
 
                 {{-- Heading --}}
-                <h1
-                    class="reveal fade-up delay-75
-                           text-4xl md:text-5xl lg:text-6xl
-                           tracking-tight leading-[1.15] mb-6">
-
-                    <span class="block mb-1 font-medium text-gray-700">
-                        UKM-IT
+                <h1 class="reveal fade-up delay-75 tracking-tight leading-[1.12] mb-6">
+                    
+                    <span class="block text-4xl md:text-5xl lg:text-[3.4rem] font-extrabold text-primary-navy">
+                        UKM-IT<br>
+                        <span class="text-secondary-blue">Cyber Open Source</span>
                     </span>
-
-                    <span class="block font-bold text-primary-navy">
-                        Cyber Open Source
-                    </span>
+                    <br>
+                    <span class="block text-lg md:text-xl font-semibold text-gray-500 mb-1"><i>Open Your Mind For The Future With Open Source</i></span>
                 </h1>
 
-                {{-- Motto --}}
-                <p
-                    class="reveal fade-up delay-150
-                           mb-4 text-lg font-medium
-                           tracking-wide text-primary-navy">
-
-                    <i>"Open Your Mind for The Future With Open Source"</i>
-                </p>
-
                 {{-- Description --}}
-                <p
-                    class="reveal fade-up delay-200
-                           max-w-lg mb-10
-                           text-base font-normal
-                           leading-relaxed text-gray-900">
-
+                <p class="reveal fade-up delay-150 max-w-lg mb-10 text-base leading-relaxed text-gray-600">
                     Wadah bagi mahasiswa untuk belajar teknologi, mengembangkan kreativitas,
                     membangun kolaborasi, dan menciptakan solusi digital melalui semangat Open Source.
                 </p>
 
-                {{-- CTA --}}
-                <div
-                    class="reveal fade-up delay-300
-                           flex flex-wrap items-center gap-4">
-
-                    <a
-                        href="{{ route('public.tentang') }}"
-                        class="btn-primary !px-7 !py-3 !text-sm
-                               !bg-gray-500 !text-white !border-gray-800
-                               hover:!bg-gray-900 hover:!border-gray-900">
-
-                        Kenal Lebih Dekat
+                {{-- CTA Buttons --}}
+                <div class="reveal fade-up delay-200 flex flex-wrap items-center gap-3">
+                    <a href="{{ route('public.kegiatan') }}" class="btn-hero-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        Lihat Kegiatan
                     </a>
-
-                    <a
-                        href="{{ route('register') }}"
-                        class="btn-primary !px-7 !py-3 !text-sm
-                               !bg-gray-500 !text-white !border-gray-800
-                               hover:!bg-gray-900 hover:!border-gray-900">
-
-                        Bergabung Bersama Kami
+                    <a href="{{ route('public.tentang') }}" class="btn-hero-secondary">
+                        Tentang COS
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
                     </a>
-
                 </div>
             </div>
 
-            {{-- Hero Visual --}}
-            <div
-                class="reveal fade-in delay-400
-                       hidden lg:flex
-                       relative items-center justify-center">
+            {{-- ── RIGHT: Interactive Linux Terminal ── --}}
+            <div class="order-2 relative flex items-center justify-center" id="terminal-parallax-wrap">
 
-                <div
-                    class="absolute w-80 h-80
-                           bg-secondary rounded-full blur-3xl">
-                </div>
 
-                @if(\App\Models\Setting::get('org_logo'))
+                {{-- Terminal --}}
+                <div class="cos-terminal w-full max-w-[460px]" id="cos-terminal" aria-label="Terminal interaktif COS" aria-live="polite">
 
-                    <img
-                        src="{{ asset('images/' . \App\Models\Setting::get('org_logo')) }}"
-                        alt="Logo UKM-IT Cyber Open Source"
-                        class="relative z-10 w-72 h-auto
-                               object-contain drop-shadow-2xl
-                               transition-transform duration-500
-                               hover:scale-105">
-
-                @else
-
-                    <div
-                        class="relative z-10
-                               w-72 h-72
-                               bg-white/5
-                               border border-white/10
-                               rounded-3xl
-                               flex flex-col items-center justify-center gap-4
-                               shadow-2xl">
-
-                        <div
-                            class="w-24 h-24
-                                   bg-secondary-blue/20
-                                   rounded-2xl
-                                   flex items-center justify-center">
-
-                            <x-lucide-layers class="w-5 h-5 text-secondary-blue" />
-
-                        </div>
-
-                        <span class="text-white font-bold text-xl tracking-tight">
-                            UKM-IT COS
-                        </span>
-
-                        <span class="text-gray-400 text-sm">
-                            UNITAMA
-                        </span>
-
+                    {{-- Title Bar --}}
+                    <div class="cos-terminal-titlebar">
+                        <span class="dot dot-red" aria-hidden="true"></span>
+                        <span class="dot dot-yellow" aria-hidden="true"></span>
+                        <span class="dot dot-green" aria-hidden="true"></span>
+                        <span class="title-text">cos@unitama — bash</span>
                     </div>
 
-                @endif
+                    {{-- COS Logo inside terminal --}}
+                    <div class="cos-terminal-logo">
+                        @if(\App\Models\Setting::get('org_logo'))
+                            <img src="{{ asset('images/' . \App\Models\Setting::get('org_logo')) }}"
+                                 alt="Logo Cyber Open Source"
+                                 class="cos-terminal-logo-img"
+                                 style="width:64px;height:auto;object-fit:contain;filter:drop-shadow(0 0 12px rgba(30,136,229,0.5));opacity:0.9;">
+                        @else
+                            <img src="{{ asset('images/logo.png') }}"
+                                 alt="Logo Cyber Open Source"
+                                 style="width:64px;height:auto;object-fit:contain;filter:drop-shadow(0 0 12px rgba(30,136,229,0.5));opacity:0.9;">
+                        @endif
+                    </div>
 
-            </div>
+                    {{-- Terminal Body --}}
+                    <div class="cos-terminal-body" id="terminal-body" aria-label="Output terminal">
+                        {{-- Content typed by JS --}}
+                    </div>
+                </div>
+
+            </div>{{-- end terminal wrap --}}
 
         </div>
+    </div>
+</section>
+
+@push('scripts')
+<script>
+(function () {
+    'use strict';
+
+    // ══════════════════════════════════════════════
+    // TERMINAL TYPEWRITER
+    // ══════════════════════════════════════════════
+    var termBody    = document.getElementById('terminal-body');
+    var prefersRM   = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var PROMPT_HTML = '<span class="terminal-prompt-user">cos</span>'
+                   + '<span class="terminal-prompt-sep">@</span>'
+                   + '<span class="terminal-prompt-host">unitama</span>'
+                   + '<span class="terminal-prompt-sep">:</span>'
+                   + '<span class="terminal-prompt-path">~</span>'
+                   + '<span class="terminal-prompt-sep">$ </span>';
+
+    var CURSOR_HTML = '<span class="terminal-cursor" aria-hidden="true"></span>';
+
+    var sequences = [
+        {
+            cmd: 'whoami',
+            outputs: [
+                { text: 'Cyber Open Source', cls: 'terminal-output' }
+            ]
+        },
+        {
+            cmd: 'ls',
+            outputs: [
+                { text: 'Programming/', cls: 'terminal-output dir' },
+                { text: 'Networking/',  cls: 'terminal-output dir' },
+                { text: 'DKV/',         cls: 'terminal-output dir' },
+                { text: 'OpenSource/',  cls: 'terminal-output dir' }
+            ]
+        },
+        {
+            cmd: './start-cos.sh',
+            outputs: [
+                { text: 'Open Your Mind for The Future With Open Source', cls: 'terminal-output info' }
+            ]
+        }
+    ];
+
+    function makePromptLine(partial) {
+        var line = document.createElement('span');
+        line.className = 'terminal-line';
+        line.innerHTML = PROMPT_HTML + '<span class="terminal-cmd">' + partial + '</span>';
+        return line;
+    }
+
+    function makeOutputLine(text, cls) {
+        var line = document.createElement('span');
+        line.className = cls;
+        line.textContent = text;
+        return line;
+    }
+
+    function addCursor() {
+        var c = document.createElement('span');
+        c.className = 'terminal-line';
+        c.innerHTML = PROMPT_HTML + CURSOR_HTML;
+        termBody.appendChild(c);
+    }
+
+    if (prefersRM) {
+        // Static render — no animation
+        sequences.forEach(function (seq) {
+            termBody.appendChild(makePromptLine(seq.cmd));
+            seq.outputs.forEach(function (o) {
+                termBody.appendChild(makeOutputLine(o.text, o.cls));
+            });
+        });
+        addCursor();
+        return;
+    }
+
+    // Animated typewriter
+    var CHAR_SPEED    = 55;   // ms per char
+    var OUTPUT_DELAY  = 220;  // ms before showing output
+    var SEQ_DELAY     = 700;  // ms between sequences
+
+    var currentSeq    = 0;
+    var currentChar   = 0;
+    var activePrompt  = null;
+    var cmdTextNode   = null;
+
+    function startSeq() {
+        if (currentSeq >= sequences.length) {
+            addCursor();
+            return;
+        }
+
+        var seq = sequences[currentSeq];
+        currentChar = 0;
+
+        activePrompt = makePromptLine('');
+        cmdTextNode  = activePrompt.querySelector('.terminal-cmd');
+        termBody.appendChild(activePrompt);
+
+        typeChar(seq);
+    }
+
+    function typeChar(seq) {
+        if (currentChar <= seq.cmd.length) {
+            cmdTextNode.textContent = seq.cmd.slice(0, currentChar);
+            currentChar++;
+            setTimeout(function () { typeChar(seq); }, CHAR_SPEED);
+        } else {
+            // Finished typing command → show output
+            setTimeout(function () {
+                seq.outputs.forEach(function (o) {
+                    termBody.appendChild(makeOutputLine(o.text, o.cls));
+                });
+                currentSeq++;
+                setTimeout(startSeq, SEQ_DELAY);
+            }, OUTPUT_DELAY);
+        }
+    }
+
+    // Start after short delay
+    setTimeout(startSeq, 600);
+
+
+    // ══════════════════════════════════════════════
+    // MOUSE PARALLAX (desktop only)
+    // ══════════════════════════════════════════════
+    var isMobile = window.matchMedia('(max-width: 1023px)').matches;
+    if (isMobile || prefersRM) return;
+
+    var wrap = document.getElementById('terminal-parallax-wrap');
+    if (!wrap) return;
+
+    var mouseX = 0, mouseY = 0;
+    var currX  = 0, currY  = 0;
+    var rafId  = null;
+    var MAX    = 6; // max px shift
+
+    document.addEventListener('mousemove', function (e) {
+        var cx  = window.innerWidth  / 2;
+        var cy  = window.innerHeight / 2;
+        mouseX  = ((e.clientX - cx) / cx) * MAX;
+        mouseY  = ((e.clientY - cy) / cy) * MAX;
+        if (!rafId) rafId = requestAnimationFrame(animParallax);
+    }, { passive: true });
+
+    function animParallax() {
+        rafId  = null;
+        currX += (mouseX - currX) * 0.08;
+        currY += (mouseY - currY) * 0.08;
+        wrap.style.transform = 'translate(' + currX.toFixed(2) + 'px, ' + currY.toFixed(2) + 'px)';
+        if (Math.abs(mouseX - currX) > 0.1 || Math.abs(mouseY - currY) > 0.1) {
+            rafId = requestAnimationFrame(animParallax);
+        }
+    }
+
+}());
+</script>
+@endpush
+
+
+{{-- ============================================================
+    KEGIATAN MENDATANG — COMPACT COUNTDOWN CARD
+============================================================ --}}
+<section class="relative py-16 md:py-20 overflow-hidden bg-[#F8FAFC]"
+         id="upcoming-section"
+         aria-labelledby="upcoming-heading">
+
+    {{-- Subtle dot-grid background --}}
+    <div class="absolute inset-0 pointer-events-none"
+         style="background-image: radial-gradient(circle, rgba(30,136,229,0.12) 1px, transparent 1px);
+                background-size: 26px 26px; opacity: 0.55;">
+    </div>
+
+    {{-- Soft blue radial glow behind card --}}
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+                w-[520px] h-[260px] pointer-events-none"
+         style="background: radial-gradient(ellipse, rgba(30,136,229,0.10) 0%, transparent 68%);
+                filter: blur(36px);">
+    </div>
+
+    <div class="section-container relative z-10 flex flex-col items-center text-center">
+
+        {{-- ── Badge ── --}}
+        <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full
+                    bg-secondary-blue/8 border border-secondary-blue/20
+                    text-secondary-blue text-[11px] font-bold tracking-[0.12em] uppercase
+                    mb-5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            Kegiatan Terdekat
+        </div>
+
+        {{-- ── Section Heading ── --}}
+        <h2 id="upcoming-heading"
+            class="text-2xl md:text-[1.75rem] font-bold text-primary-navy tracking-tight mb-8">
+            Agenda COS Selanjutnya
+        </h2>
+
+        @if($upcomingActivity)
+            @php
+                // Build ISO 8601 target datetime (start of start_date day, app timezone)
+                $targetDt = \Illuminate\Support\Carbon::parse($upcomingActivity->start_date)
+                                ->startOfDay()
+                                ->toIso8601String();
+
+                $endDt = null;
+                if ($upcomingActivity->end_date) {
+                    $endDt = \Illuminate\Support\Carbon::parse($upcomingActivity->end_date)
+                                ->endOfDay()
+                                ->toIso8601String();
+                }
+
+                // Server-side status
+                $startCarbon = \Illuminate\Support\Carbon::parse($upcomingActivity->start_date)->startOfDay();
+                $endCarbon   = $upcomingActivity->end_date
+                                 ? \Illuminate\Support\Carbon::parse($upcomingActivity->end_date)->endOfDay()
+                                 : null;
+
+                $serverStatus = 'upcoming';
+                if ($now->greaterThanOrEqualTo($startCarbon)) {
+                    if ($endCarbon && $now->lessThanOrEqualTo($endCarbon)) {
+                        $serverStatus = 'ongoing';
+                    } elseif (!$endCarbon) {
+                        $serverStatus = $now->isSameDay($startCarbon) ? 'ongoing' : 'done';
+                    } else {
+                        $serverStatus = 'done';
+                    }
+                }
+
+                // Format date range
+                $dateRange = $upcomingActivity->start_date->translatedFormat('d F Y');
+                if ($upcomingActivity->end_date && !$upcomingActivity->start_date->isSameDay($upcomingActivity->end_date)) {
+                    $dateRange .= ' — ' . $upcomingActivity->end_date->translatedFormat('d F Y');
+                }
+            @endphp
+
+            {{-- ── Activity Info ── --}}
+            <div class="mb-7 max-w-lg">
+
+                {{-- Activity Title --}}
+                <h3 class="text-xl md:text-2xl font-extrabold text-primary-navy tracking-tight mb-2 uppercase">
+                    {{ $upcomingActivity->title }}
+                </h3>
+
+                {{-- Date --}}
+                <p class="text-xs font-semibold text-secondary-blue/80 uppercase tracking-[0.1em] mb-1.5">
+                    {{ $dateRange }}
+                </p>
+
+                {{-- Location --}}
+                @if($upcomingActivity->location)
+                    <p class="inline-flex items-center justify-center gap-1 text-xs text-gray-400 font-medium">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        {{ $upcomingActivity->location }}
+                    </p>
+                @endif
+            </div>
+
+            @if($serverStatus === 'ongoing')
+
+                {{-- ── ONGOING STATE ── --}}
+                <div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full
+                            bg-emerald-50 border border-emerald-200">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-emerald-700 font-semibold text-sm tracking-wide">
+                        Kegiatan Sedang Berlangsung
+                    </span>
+                </div>
+
+            @elseif($serverStatus === 'upcoming')
+
+                {{-- ── COUNTDOWN CARD ── --}}
+                <div id="countdown-wrap"
+                     class="w-full max-w-[520px]
+                            bg-white border border-[#E2E8F0] rounded-2xl
+                            shadow-sm shadow-slate-100
+                            px-6 py-5 mb-6">
+
+                    {{-- Numbers row --}}
+                    <div class="flex items-start justify-center gap-0">
+
+                        @foreach([
+                            ['id' => 'cd-days',    'label' => 'Hari'],
+                            ['id' => 'cd-hours',   'label' => 'Jam'],
+                            ['id' => 'cd-minutes', 'label' => 'Menit'],
+                            ['id' => 'cd-seconds', 'label' => 'Detik'],
+                        ] as $unit)
+
+                            <div class="flex flex-col items-center px-3 sm:px-4 md:px-5">
+                                <span id="{{ $unit['id'] }}"
+                                      class="text-[2.25rem] sm:text-[2.6rem] md:text-[3rem]
+                                             font-extrabold text-primary-navy tabular-nums leading-none"
+                                      aria-live="polite" aria-atomic="true">--</span>
+                                <span class="mt-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">
+                                    {{ $unit['label'] }}
+                                </span>
+                            </div>
+
+                            @if(!$loop->last)
+                                <span class="text-[2rem] font-light text-slate-200 mt-0.5 leading-none select-none"
+                                      aria-hidden="true">:</span>
+                            @endif
+
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- ── CTA ── --}}
+                <a href="{{ route('public.kegiatan.show', $upcomingActivity->slug) }}"
+                   class="inline-flex items-center gap-1.5
+                          px-5 py-2 rounded-xl
+                          border border-secondary-blue/30 bg-white
+                          text-secondary-blue text-sm font-semibold
+                          hover:bg-secondary-blue hover:text-white hover:border-secondary-blue
+                          transition-all duration-200 shadow-sm">
+                    Lihat Detail Kegiatan
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                </a>
+
+                {{-- Client-side countdown — datetime injected from Laravel, zero hardcoding --}}
+                @push('scripts')
+                <script>
+                (function () {
+                    'use strict';
+
+                    var TARGET_ISO = @json($targetDt);
+                    var END_ISO    = @json($endDt);
+
+                    var targetMs = new Date(TARGET_ISO).getTime();
+                    var endMs    = END_ISO ? new Date(END_ISO).getTime() : null;
+
+                    var elDays    = document.getElementById('cd-days');
+                    var elHours   = document.getElementById('cd-hours');
+                    var elMinutes = document.getElementById('cd-minutes');
+                    var elSeconds = document.getElementById('cd-seconds');
+                    var wrap      = document.getElementById('countdown-wrap');
+
+                    function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+                    function showOngoing() {
+                        if (!wrap) return;
+                        wrap.innerHTML =
+                            '<div class="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full' +
+                            ' bg-emerald-50 border border-emerald-200">' +
+                            '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>' +
+                            '<span class="text-emerald-700 font-semibold text-sm tracking-wide">' +
+                            'Kegiatan Sedang Berlangsung</span></div>';
+                    }
+
+                    function tick() {
+                        var now  = Date.now();
+                        var diff = targetMs - now;
+
+                        if (diff <= 0) {
+                            if (endMs && now < endMs) {
+                                showOngoing();
+                            }
+                            // If no endMs or past end, simply stop — no 00:00:00:00
+                            return;
+                        }
+
+                        var totalSec = Math.floor(diff / 1000);
+                        var days    = Math.floor(totalSec / 86400);
+                        var hours   = Math.floor((totalSec % 86400) / 3600);
+                        var minutes = Math.floor((totalSec % 3600) / 60);
+                        var seconds = totalSec % 60;
+
+                        if (elDays)    elDays.textContent    = pad(days);
+                        if (elHours)   elHours.textContent   = pad(hours);
+                        if (elMinutes) elMinutes.textContent = pad(minutes);
+                        if (elSeconds) elSeconds.textContent = pad(seconds);
+
+                        setTimeout(tick, 1000);
+                    }
+
+                    tick();
+                }());
+                </script>
+                @endpush
+
+            @else
+                {{-- Done state: shouldn't normally show (query filters start_date >= today) --}}
+                <p class="text-sm text-gray-400">Kegiatan telah selesai dilaksanakan.</p>
+            @endif
+
+        @else
+
+            {{-- ── EMPTY STATE ── --}}
+            <div class="flex flex-col items-center gap-3 py-4">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-full
+                            bg-secondary-blue/8 border border-secondary-blue/15">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                         class="text-secondary-blue/50" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                </div>
+                <p class="text-sm font-medium text-gray-400">Belum ada kegiatan mendatang.</p>
+                <a href="{{ route('public.kegiatan') }}"
+                   class="inline-flex items-center gap-1 text-xs font-semibold text-secondary-blue
+                          hover:underline underline-offset-2 transition-colors">
+                    Lihat semua kegiatan
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="9 18 15 12 9 6"/>
+                    </svg>
+                </a>
+            </div>
+
+        @endif
 
     </div>
 </section>
@@ -180,6 +552,7 @@
     SAMBUTAN KETUA UMUM
 ============================================================ --}}
 @if($ketuaUmum)
+
 
     @php
         $member = $ketuaUmum->member;
@@ -693,7 +1066,7 @@
                             'icon' => '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
                             'color' => 'text-primary-navy',
                             'bg' => 'bg-indigo-50',
-                            'offset' => true,
+                            'offset' => false,
                         ],
                         [
                             'title' => 'Inovasi',
@@ -701,7 +1074,7 @@
                             'icon' => '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
                             'color' => 'text-orange-500',
                             'bg' => 'bg-orange-50',
-                            'offset' => true,
+                            'offset' => false,
                         ],
                         [
                             'title' => 'Komunitas',

@@ -11,6 +11,7 @@ use App\Models\Member;
 use App\Models\Period;
 use App\Models\Position;
 use App\Models\Setting;
+use Illuminate\Support\Carbon;
 
 class HomeController extends Controller
 {
@@ -34,11 +35,23 @@ class HomeController extends Controller
             ->limit(3)
             ->get();
 
-        // Latest activities
+        // Latest activities (for sections)
         $latestActivities = Activity::with('division')
             ->orderByDesc('start_date')
             ->limit(3)
             ->get();
+
+        // Upcoming activity for countdown
+        // Logic:
+        //   - status = 'published'  (only visible/public entries)
+        //   - start_date >= today   (hasn't started yet OR starts today)
+        //   - order by start_date ASC → pick the nearest one
+        $now             = Carbon::now();
+        $today           = $now->toDateString();
+        $upcomingActivity = Activity::where('status', 'published')
+            ->where('start_date', '>=', $today)
+            ->orderBy('start_date', 'asc')
+            ->first();
 
         // Active divisions
         $divisions = Division::where('is_active', true)->limit(6)->get();
@@ -76,7 +89,7 @@ class HomeController extends Controller
         return view('public.home', compact(
             'stats', 'latestArticles', 'latestActivities',
             'divisions', 'coreManagement', 'activePeriod', 'galleryPhotos',
-            'ketuaUmum'
+            'ketuaUmum', 'upcomingActivity', 'now'
         ));
     }
 }

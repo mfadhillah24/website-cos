@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Notulen Rapat - {{ $meeting?->title ?? 'Notulen' }}</title>
+
     <style>
         /* ─── Reset & Base ─── */
         * {
@@ -106,7 +108,7 @@
 
         /* ─── Section ─── */
         .section {
-            margin-bottom: 16px;
+            margin-bottom: 10px;
             page-break-inside: avoid;
         }
 
@@ -141,38 +143,47 @@
             width: 100%;
             border: none;
             border-top: 1px solid #cbd5e1;
-            margin: 4px 0 8px 0;
+            margin: 3px 0 5px 0;
         }
 
         /* ─── Info Table ─── */
         .info-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
+            font-size: 8.5pt;
+            line-height: 1.25;
         }
 
         .info-table tr td {
-            padding: 2px 0;
+            padding: 2px 5px;
             vertical-align: top;
             color: #1e293b;
-            font-size: 10pt;
+            font-size: 8.5pt;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .info-table tr:last-child td {
+            border-bottom: none;
         }
 
         .info-table tr td.label {
-            width: 28%;
+            width: 27%;
             color: #475569;
             font-weight: normal;
-            padding-right: 6px;
+            padding-right: 8px;
         }
 
         .info-table tr td.colon {
-            width: 12px;
+            width: 10px;
             color: #94a3b8;
-            padding-right: 6px;
+            padding: 2px 3px;
             text-align: center;
         }
 
         .info-table tr td.value {
             color: #1e293b;
+            font-weight: normal;
         }
 
         /* ─── Content Block ─── */
@@ -218,6 +229,7 @@
         }
     </style>
 </head>
+
 <body>
 
     {{-- FOOTER (fixed, muncul di setiap halaman) --}}
@@ -231,7 +243,14 @@
         if (isset($pdf)) {
             $pdf->page_script(function($PAGE_NUM, $PAGE_COUNT, $canvas, $fontMetrics) {
                 $font = $fontMetrics->getFont('DejaVu Sans', 'normal');
-                $canvas->text(490, $canvas->get_height() - 35, 'Halaman ' . $PAGE_NUM . ' dari ' . $PAGE_COUNT, $font, 8, [0.58, 0.64, 0.71]);
+                $canvas->text(
+                    490,
+                    $canvas->get_height() - 35,
+                    'Halaman ' . $PAGE_NUM . ' dari ' . $PAGE_COUNT,
+                    $font,
+                    8,
+                    [0.58, 0.64, 0.71]
+                );
             });
         }
     </script>
@@ -243,122 +262,160 @@
             <tr>
                 <td class="header-logo-cell">
                     @php
-                        $resolvedLogoPath = isset($logoPath) && file_exists($logoPath) 
-                            ? $logoPath 
+                        $resolvedLogoPath = isset($logoPath) && file_exists($logoPath)
+                            ? $logoPath
                             : public_path('images/logo.png');
-                        
+
                         $logoDataUri = null;
+
                         if (file_exists($resolvedLogoPath)) {
                             $type = pathinfo($resolvedLogoPath, PATHINFO_EXTENSION);
                             $data = file_get_contents($resolvedLogoPath);
                             $logoDataUri = 'data:image/' . $type . ';base64,' . base64_encode($data);
                         }
                     @endphp
+
                     @if($logoDataUri)
                         <img src="{{ $logoDataUri }}" alt="Logo UKM-IT COS">
                     @endif
                 </td>
+
                 <td class="header-text-cell">
-                    <div class="header-org">UKM-IT CYBER OPEN SOURCE</div>
-                    <div class="header-univ">UNIVERSITAS TEKNOLOGI AKBA MAKASSAR</div>
-                    <div class="header-tagline">Open Your Mind for The Future With Open Source</div>
+                    <div class="header-org">
+                        UKM-IT CYBER OPEN SOURCE
+                    </div>
+
+                    <div class="header-univ">
+                        UNIVERSITAS TEKNOLOGI AKBA MAKASSAR
+                    </div>
+
+                    <div class="header-tagline">
+                        Open Your Mind for The Future With Open Source
+                    </div>
                 </td>
             </tr>
         </table>
+
         <hr class="header-divider">
         <hr class="header-divider-thin">
 
-        {{-- ────── JUDUL DOKUMEN ────── --}}
-        
 
         {{-- ────── INFORMASI RAPAT ────── --}}
         <div class="section">
+
             <div class="section-title-wrap">
                 <span class="section-bullet"></span>
                 <span class="section-title">Informasi Rapat</span>
                 <hr class="section-divider">
             </div>
+
             <table class="info-table">
+
                 @if ($meeting?->title)
-                <tr>
-                    <td class="label">Topik</td>
-                    <td class="colon">:</td>
-                    <td class="value">{{ $meeting->title }}</td>
-                </tr>
+                    <tr>
+                        <td class="label">Topik</td>
+                        <td class="colon">:</td>
+                        <td class="value">{{ $meeting->title }}</td>
+                    </tr>
                 @endif
+
                 <tr>
                     <td class="label">Tanggal</td>
                     <td class="colon">:</td>
                     <td class="value">{{ $tanggalFmt }}</td>
                 </tr>
+
                 <tr>
                     <td class="label">Waktu</td>
                     <td class="colon">:</td>
                     <td class="value">{{ $waktuFmt }}</td>
                 </tr>
+
                 @if ($meeting?->location)
-                <tr>
-                    <td class="label">Lokasi</td>
-                    <td class="colon">:</td>
-                    <td class="value">{{ $meeting->location }}</td>
-                </tr>
+                    <tr>
+                        <td class="label">Lokasi</td>
+                        <td class="colon">:</td>
+                        <td class="value">{{ $meeting->location }}</td>
+                    </tr>
                 @endif
+
                 @if ($meeting?->attendance_count !== null)
-                <tr>
-                    <td class="label">Jumlah Peserta Hadir</td>
-                    <td class="colon">:</td>
-                    <td class="value">{{ $meeting->attendance_count }} orang</td>
-                </tr>
+                    <tr>
+                        <td class="label">Jumlah Peserta Hadir</td>
+                        <td class="colon">:</td>
+                        <td class="value">{{ $meeting->attendance_count }} orang</td>
+                    </tr>
                 @endif
+
                 @if ($minute->leader)
-                <tr>
-                    <td class="label">Pemimpin Rapat</td>
-                    <td class="colon">:</td>
-                    <td class="value">{{ $minute->leader }}</td>
-                </tr>
+                    <tr>
+                        <td class="label">Pemimpin Rapat</td>
+                        <td class="colon">:</td>
+                        <td class="value">{{ $minute->leader }}</td>
+                    </tr>
                 @endif
+
                 @if ($minute->notulist)
-                <tr>
-                    <td class="label">Notulis</td>
-                    <td class="colon">:</td>
-                    <td class="value">{{ $minute->notulist }}</td>
-                </tr>
+                    <tr>
+                        <td class="label">Notulis</td>
+                        <td class="colon">:</td>
+                        <td class="value">{{ $minute->notulist }}</td>
+                    </tr>
                 @endif
+
             </table>
         </div>
 
+
         {{-- ────── AGENDA RAPAT ────── --}}
         @if ($meeting?->agenda)
-        <div class="section">
-            <div class="section-title-wrap">
-                <span class="section-bullet"></span>
-                <span class="section-title">Agenda Rapat</span>
-                <hr class="section-divider">
+            <div class="section">
+
+                <div class="section-title-wrap">
+                    <span class="section-bullet"></span>
+                    <span class="section-title">Agenda Rapat</span>
+                    <hr class="section-divider">
+                </div>
+
+                <div class="content-block">
+                    {{ $meeting->agenda }}
+                </div>
+
             </div>
-            <div class="content-block">{{ $meeting->agenda }}</div>
-        </div>
         @endif
+
 
         {{-- ────── HASIL PEMBAHASAN ────── --}}
         <div class="section">
+
             <div class="section-title-wrap">
                 <span class="section-bullet"></span>
                 <span class="section-title">Hasil Pembahasan</span>
                 <hr class="section-divider">
             </div>
-            <div class="content-block">{{ $minute->discussion_results }}</div>
+
+            <div class="content-block">
+                {{ $minute->discussion_results }}
+            </div>
+
         </div>
+
 
         {{-- ────── KEPUTUSAN ────── --}}
         @if ($minute->decisions)
-        <div class="section">
-            <div class="section-title-wrap">
-                <span class="section-bullet"></span>
-                <span class="section-title">Keputusan</span>
-                <hr class="section-divider">
+            <div class="section">
+
+                <div class="section-title-wrap">
+                    <span class="section-bullet"></span>
+                    <span class="section-title">Keputusan</span>
+                    <hr class="section-divider">
+                </div>
+
+                <div class="content-block">
+                    {{ $minute->decisions }}
+                </div>
+
             </div>
-            <div class="content-block">{{ $minute->decisions }}</div>
-        </div>
         @endif
 
     </div>
