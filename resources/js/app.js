@@ -10,15 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // TERMINAL ENGINE INIT
     // ==========================================
     
-    // Check if on homepage
     const homepageTerminal = document.getElementById('cos-terminal');
     const miniTerminal = document.getElementById('cos-mini-terminal');
-    let engine = null;
+    let mainEngine = null;
+    let miniEngine = null;
 
     if (homepageTerminal) {
         // Init large terminal dengan intro typewriter
-        engine = new TerminalEngine(homepageTerminal, { isMini: false, autoFocus: true, playIntro: true });
-    } else if (miniTerminal) {
+        mainEngine = new TerminalEngine(homepageTerminal, { isMini: false, autoFocus: true, playIntro: true });
+    }
+    
+    if (miniTerminal) {
         // Init mini terminal
         const miniBody = miniTerminal.querySelector('.cos-terminal-body');
         
@@ -26,20 +28,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const toggleBtn = document.getElementById('mini-terminal-toggle');
         const closeBtn = document.getElementById('mini-terminal-close');
         
-        engine = new TerminalEngine(miniTerminal, { isMini: true, autoFocus: false });
+        miniEngine = new TerminalEngine(miniTerminal, { isMini: true, autoFocus: false });
         
         if (toggleBtn && closeBtn) {
             toggleBtn.addEventListener('click', () => {
                 miniTerminal.classList.remove('closed');
                 miniTerminal.classList.add('open');
-                if (engine.input) engine.input.focus();
-                engine.scrollToBottom();
+                if (miniEngine.input) miniEngine.input.focus();
+                miniEngine.scrollToBottom();
             });
             
             closeBtn.addEventListener('click', () => {
                 miniTerminal.classList.remove('open');
                 miniTerminal.classList.add('closed');
             });
+        }
+
+        // If on homepage, add scroll listener to show/hide mini terminal based on hero section
+        if (homepageTerminal) {
+            const heroSection = document.getElementById('hero-section');
+            if (heroSection) {
+                const handleScroll = () => {
+                    const heroBottom = heroSection.getBoundingClientRect().bottom;
+                    if (heroBottom < 100) { 
+                        miniTerminal.style.display = 'flex';
+                    } else {
+                        miniTerminal.style.display = 'none';
+                        if (miniTerminal.classList.contains('open')) {
+                            miniTerminal.classList.remove('open');
+                            miniTerminal.classList.add('closed');
+                        }
+                    }
+                };
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                // We don't need to call handleScroll() immediately because the inline style display: none handles initial state
+            }
         }
     }
 
