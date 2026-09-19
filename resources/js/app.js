@@ -1,10 +1,47 @@
 import './bootstrap';
-
+import { TerminalEngine } from './terminal/engine.js';
 
 // ==========================================
 // IMAGE POPUP / LIGHTBOX
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+
+    // ==========================================
+    // TERMINAL ENGINE INIT
+    // ==========================================
+    
+    // Check if on homepage
+    const homepageTerminal = document.getElementById('cos-terminal');
+    const miniTerminal = document.getElementById('cos-mini-terminal');
+    let engine = null;
+
+    if (homepageTerminal) {
+        // Init large terminal dengan intro typewriter
+        engine = new TerminalEngine(homepageTerminal, { isMini: false, autoFocus: true, playIntro: true });
+    } else if (miniTerminal) {
+        // Init mini terminal
+        const miniBody = miniTerminal.querySelector('.cos-terminal-body');
+        
+        // Wait for user to open it before autofocus
+        const toggleBtn = document.getElementById('mini-terminal-toggle');
+        const closeBtn = document.getElementById('mini-terminal-close');
+        
+        engine = new TerminalEngine(miniTerminal, { isMini: true, autoFocus: false });
+        
+        if (toggleBtn && closeBtn) {
+            toggleBtn.addEventListener('click', () => {
+                miniTerminal.classList.remove('closed');
+                miniTerminal.classList.add('open');
+                if (engine.input) engine.input.focus();
+                engine.scrollToBottom();
+            });
+            
+            closeBtn.addEventListener('click', () => {
+                miniTerminal.classList.remove('open');
+                miniTerminal.classList.add('closed');
+            });
+        }
+    }
 
     let imageModal = null;
     let modalImage = null;

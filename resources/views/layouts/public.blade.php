@@ -308,6 +308,30 @@
         </div>
     </footer>
 
+    {{-- MINI TERMINAL (Floating) --}}
+    @if(!request()->routeIs('home'))
+        <div id="cos-mini-terminal" class="cos-mini-terminal closed" aria-label="Mini Terminal">
+            <button class="cos-mini-terminal-toggle" id="mini-terminal-toggle" aria-label="Buka Terminal">
+                <span class="icon">>_</span>
+                <span class="text">COS</span>
+            </button>
+            <div class="cos-mini-terminal-window">
+                <div class="cos-terminal-titlebar">
+                    <div class="dots">
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                    </div>
+                    <span class="title-text">COS Terminal</span>
+                    <button class="close-btn" id="mini-terminal-close">&times;</button>
+                </div>
+                <div class="cos-terminal-body" id="mini-terminal-body">
+                    <!-- Engine will populate this -->
+                </div>
+            </div>
+        </div>
+    @endif
+
     <script>
     (function () {
         'use strict';

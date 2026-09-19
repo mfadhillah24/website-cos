@@ -59,6 +59,7 @@ use App\Http\Controllers\Public\AboutController;
 use App\Http\Controllers\Public\OrganizationController;
 use App\Http\Controllers\Public\DivisionController as PublicDivisionController;
 use App\Http\Controllers\Public\ActivityController as PublicActivityController;
+use App\Http\Controllers\Public\TerminalController;
 use App\Http\Controllers\Public\ArticleController as PublicArticleController;
 use App\Http\Controllers\Public\GalleryController as PublicGalleryController;
 
@@ -81,6 +82,8 @@ Route::get('/galeri', [PublicGalleryController::class, 'index'])->name('public.g
 Route::get('/sitemap.xml', [\App\Http\Controllers\Public\SitemapController::class, 'index'])->name('sitemap');
 Route::get('/kontak', [PublicContactController::class, 'showForm'])->name('public.kontak');
 Route::post('/kontak', [PublicContactController::class, 'submitForm'])->name('public.kontak.store');
+
+Route::get('/api/terminal/activities', [TerminalController::class, 'activities'])->name('api.terminal.activities');
 
 Route::get('/register', [PublicRegistrationController::class, 'create'])->name('register');
 Route::post('/register', [PublicRegistrationController::class, 'store'])->name('register.store');
