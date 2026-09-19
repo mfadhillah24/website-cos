@@ -1,20 +1,20 @@
 <?php
 
-// //⚠️ ROUTE SEMENTARA - HAPUS SETELAH DIGUNAKAN
-// Route::get('/clear-cache-now', function () {
-//     \Artisan::call('config:clear');
-//     \Artisan::call('cache:clear');
-//     \Artisan::call('view:clear');
-//     \Artisan::call('route:clear');
-//     return '<h2 style="font-family:sans-serif;color:green;">✅ Cache berhasil di-clear!</h2>
-//             <ul style="font-family:sans-serif;">
-//                 <li>config:clear ✓</li>
-//                 <li>cache:clear ✓</li>
-//                 <li>view:clear ✓</li>
-//                 <li>route:clear ✓</li>
-//             </ul>
-//             <p style="font-family:sans-serif;color:red;"><strong>Jangan lupa hapus route ini setelah selesai!</strong></p>';
-// });
+//⚠️ ROUTE SEMENTARA - HAPUS SETELAH DIGUNAKAN
+Route::get('/clear-cache-now', function () {
+    \Artisan::call('config:clear');
+    \Artisan::call('cache:clear');
+    \Artisan::call('view:clear');
+    \Artisan::call('route:clear');
+    return '<h2 style="font-family:sans-serif;color:green;">✅ Cache berhasil di-clear!</h2>
+            <ul style="font-family:sans-serif;">
+                <li>config:clear ✓</li>
+                <li>cache:clear ✓</li>
+                <li>view:clear ✓</li>
+                <li>route:clear ✓</li>
+            </ul>
+            <p style="font-family:sans-serif;color:red;"><strong>Jangan lupa hapus route ini setelah selesai!</strong></p>';
+});
 
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\FinanceCategoryController;
@@ -292,11 +292,11 @@ Route::get('/file/{path}', function (string $path) {
 
 // ⚠️ ROUTE SEMENTARA - HAPUS SETELAH DIPAKAI
 // Jalankan migration di hosting via browser
-// Route::get('/run-migrate', function () {
-//     try {
-//         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-//         return '<pre style="font-family:monospace;padding:20px;">' . \Illuminate\Support\Facades\Artisan::output() . '</pre>';
-//     } catch (\Exception $e) {
-//         return '<pre style="color:red;padding:20px;">ERROR: ' . $e->getMessage() . '</pre>';
-//     }
-// });
+Route::get('/run-migrate', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        return '<pre style="font-family:monospace;padding:20px;">' . \Illuminate\Support\Facades\Artisan::output() . '</pre>';
+    } catch (\Exception $e) {
+        return '<pre style="color:red;padding:20px;">ERROR: ' . $e->getMessage() . '</pre>';
+    }
+});
