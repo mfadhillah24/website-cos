@@ -4,10 +4,10 @@ const path = require('path');
 const { marked } = require('marked');
 
 const PROJECT_ROOT = 'd:\\SEMESTER 4\\PEMROGRAMAN WEB 2\\LARAVELL\\website-cos';
-const DOCS_DIR     = path.join(PROJECT_ROOT, 'docs');
-const MD_PATH      = path.join(DOCS_DIR, 'PANDUAN-SISTEM.md');
-const PDF_PATH     = path.join(DOCS_DIR, 'PANDUAN-SISTEM.pdf');
-const SS_DIR       = path.join(DOCS_DIR, 'assets', 'screenshots');
+const DOCS_DIR     = PROJECT_ROOT;
+const MD_PATH      = path.join(PROJECT_ROOT, 'BUKU-PANDUAN-SISTEM.md');
+const PDF_PATH     = path.join(PROJECT_ROOT, 'BUKU-PANDUAN COS MANAGEMENT SYSTEM.pdf');
+const SS_DIR       = path.join(PROJECT_ROOT, 'public', 'images', 'screenshots'); // Just a fallback if it exists
 
 // Read markdown
 const mdRaw = fs.readFileSync(MD_PATH, 'utf-8');
@@ -47,8 +47,10 @@ async function run() {
     console.log('PDF GENERATOR — Buku Panduan Sistem COS');
     console.log('='.repeat(60));
 
-    // Count screenshots
-    const files = fs.readdirSync(SS_DIR).filter(f => f.endsWith('.png'));
+    let files = [];
+    if (fs.existsSync(SS_DIR)) {
+        files = fs.readdirSync(SS_DIR).filter(f => f.endsWith('.png'));
+    }
     console.log(`Screenshots found: ${files.length} files`);
 
     // Embed screenshots as base64

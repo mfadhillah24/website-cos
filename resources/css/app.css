@@ -853,10 +853,23 @@
         padding: 0 2px;
         gap: 1px;
         opacity: 0;
-        /* transform controlled by JS (scroll progress) */
+        transition: opacity 0.4s ease;
+        /* transform controlled by JS (scroll progress) on home page */
         will-change: opacity, transform;
         pointer-events: none;
         overflow: hidden;
+    }
+
+    /* On non-home pages: show immediately when JS has populated data */
+    .navbar-event-preview[data-ready="true"] {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* On home page, scroll-morph JS controls opacity via inline style —
+       disable CSS transition so there is no animation lag per frame */
+    body[data-page="home"] .navbar-event-preview {
+        transition: none;
     }
 
     /* Event name — visible on mobile, smaller size */

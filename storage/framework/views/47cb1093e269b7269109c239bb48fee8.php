@@ -28,7 +28,8 @@
 
     <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
-<body class="font-sans antialiased text-gray-600 bg-bg-page flex flex-col min-h-screen page-transition-wrap">
+<body class="font-sans antialiased text-gray-600 bg-bg-page flex flex-col min-h-screen page-transition-wrap"
+      <?php if(isset($isHomePage) && $isHomePage): ?> data-page="home" <?php endif; ?>>
 
     
     <?php
@@ -39,6 +40,21 @@
         $email     = \App\Models\Setting::get('social_email');
         $isTentangActive   = request()->routeIs('public.tentang') || request()->routeIs('public.organisasi') || request()->routeIs('public.divisi') || request()->routeIs('public.divisi.show');
         $isAktivitasActive = request()->routeIs('public.kegiatan') || request()->routeIs('public.kegiatan.show') || request()->routeIs('public.berita') || request()->routeIs('public.berita.show') || request()->routeIs('public.galeri');
+
+        // ── Global countdown data (used by navbar preview on every page) ──
+        $isHomePage = request()->routeIs('home');
+        $globalUpcoming = \App\Models\Activity::where('status', 'published')
+            ->where('start_date', '>=', \Illuminate\Support\Carbon::today()->toDateString())
+            ->orderBy('start_date', 'asc')
+            ->first();
+        $globalTargetDt = null;
+        $globalEndDt    = null;
+        if ($globalUpcoming) {
+            $globalTargetDt = \Illuminate\Support\Carbon::parse($globalUpcoming->start_date)->startOfDay()->toIso8601String();
+            $globalEndDt    = $globalUpcoming->end_date
+                ? \Illuminate\Support\Carbon::parse($globalUpcoming->end_date)->endOfDay()->toIso8601String()
+                : null;
+        }
     ?>
 
     <nav class="pub-navbar" id="pub-navbar" role="navigation" aria-label="Navigasi utama"
@@ -464,8 +480,7 @@
         });
 
         // ── Navbar countdown preview init ──
-        // Called by home.blade.php after window.COS_COUNTDOWN is ready.
-        // No DB query here — data comes purely from the countdown state.
+        // Called by home.blade.php (or the global script below) after window.COS_COUNTDOWN is ready.
         window.initNavbarCountdown = function (countdown) {
             var navPreview = document.getElementById('navbar-event-preview');
             var nepName    = document.getElementById('nep-name');
@@ -488,6 +503,83 @@
             // Mark ready so scroll-morph JS can detect initialization
             navPreview.setAttribute('data-ready', 'true');
         };
+
+        // ── Global navbar countdown (non-home pages) ──
+        // On the home page, home.blade.php initialises COS_COUNTDOWN itself.
+        // On every other page we initialise it here so the navbar preview ticks.
+        <?php if(!$isHomePage && $globalUpcoming): ?>
+        (function () {
+            var TARGET_ISO = <?php echo json_encode($globalTargetDt, 15, 512) ?>;
+            var END_ISO    = <?php echo json_encode($globalEndDt, 15, 512) ?>;
+            var EVENT_NAME = <?php echo json_encode($globalUpcoming->title, 15, 512) ?>;
+            var EVENT_SLUG = <?php echo json_encode($globalUpcoming->slug, 15, 512) ?>;
+
+            var targetMs = new Date(TARGET_ISO).getTime();
+            var endMs    = END_ISO ? new Date(END_ISO).getTime() : null;
+
+            function pad(n) { return n < 10 ? '0' + n : String(n); }
+            function fmtCd(d, h, m, s) {
+                if (d > 0) return d + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
+                if (h > 0) return pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
+                return pad(m) + 'm ' + pad(s) + 's';
+            }
+
+            window.COS_COUNTDOWN = {
+                eventName : EVENT_NAME,
+                eventSlug : EVENT_SLUG,
+                targetMs  : targetMs,
+                endMs     : endMs,
+                d: 0, h: 0, m: 0, s: 0,
+                cdStr     : '',
+                isOngoing : false,
+                _subs     : [],
+                subscribe : function (fn) {
+                    this._subs.push(fn);
+                    if (this.cdStr) fn(this);
+                },
+                _notify : function () {
+                    var self = this;
+                    this._subs.forEach(function (fn) { fn(self); });
+                }
+            };
+
+            function tick() {
+                var now  = Date.now();
+                var diff = targetMs - now;
+
+                if (diff <= 0) {
+                    if (endMs && now < endMs) {
+                        window.COS_COUNTDOWN.isOngoing = true;
+                        window.COS_COUNTDOWN.cdStr     = 'Berlangsung';
+                        window.COS_COUNTDOWN._notify();
+                    }
+                    return;
+                }
+
+                var total   = Math.floor(diff / 1000);
+                var days    = Math.floor(total / 86400);
+                var hours   = Math.floor((total % 86400) / 3600);
+                var minutes = Math.floor((total % 3600) / 60);
+                var seconds = total % 60;
+
+                window.COS_COUNTDOWN.d     = days;
+                window.COS_COUNTDOWN.h     = hours;
+                window.COS_COUNTDOWN.m     = minutes;
+                window.COS_COUNTDOWN.s     = seconds;
+                window.COS_COUNTDOWN.cdStr = fmtCd(days, hours, minutes, seconds);
+                window.COS_COUNTDOWN._notify();
+
+                setTimeout(tick, 1000);
+            }
+
+            tick();
+
+            // Connect to navbar preview
+            if (typeof window.initNavbarCountdown === 'function') {
+                window.initNavbarCountdown(window.COS_COUNTDOWN);
+            }
+        }());
+        <?php endif; ?>
 
     }());
     </script>
