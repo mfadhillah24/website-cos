@@ -92,7 +92,11 @@
                     </button>
                     <div id="dropdown-tentang-panel" class="nav-dropdown-panel" role="menu" aria-labelledby="dropdown-tentang-btn">
                         <a href="<?php echo e(route('public.tentang')); ?>" role="menuitem" class="nav-dropdown-item <?php echo e(request()->routeIs('public.tentang') ? 'active' : ''); ?>">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                            <?php if($orgLogo): ?>
+                                <img src="<?php echo e(asset('images/' . $orgLogo)); ?>" alt="Logo" class="nav-dropdown-logo">
+                            <?php else: ?>
+                                <img src="<?php echo e(asset('images/logo.png')); ?>" alt="Logo" class="nav-dropdown-logo">
+                            <?php endif; ?>
                             Tentang COS
                         </a>
                         <a href="<?php echo e(route('public.organisasi')); ?>" role="menuitem" class="nav-dropdown-item <?php echo e(request()->routeIs('public.organisasi') ? 'active' : ''); ?>">
@@ -173,9 +177,22 @@
                         <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
                     <div id="mob-acc-tentang" class="mobile-accordion-content <?php echo e($isTentangActive ? 'open' : ''); ?>">
-                        <a href="<?php echo e(route('public.tentang')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.tentang') ? 'active' : ''); ?>">Tentang COS</a>
-                        <a href="<?php echo e(route('public.organisasi')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.organisasi') ? 'active' : ''); ?>">Organisasi</a>
-                        <a href="<?php echo e(route('public.divisi')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.divisi') || request()->routeIs('public.divisi.show') ? 'active' : ''); ?>">Divisi</a>
+                        <a href="<?php echo e(route('public.tentang')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.tentang') ? 'active' : ''); ?> flex items-center gap-2">
+                            <?php if($orgLogo): ?>
+                                <img src="<?php echo e(asset('images/' . $orgLogo)); ?>" alt="Logo" class="nav-dropdown-logo">
+                            <?php else: ?>
+                                <img src="<?php echo e(asset('images/logo.png')); ?>" alt="Logo" class="nav-dropdown-logo">
+                            <?php endif; ?>
+                            Tentang COS
+                        </a>
+                        <a href="<?php echo e(route('public.organisasi')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.organisasi') ? 'active' : ''); ?> flex items-center gap-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Organisasi
+                        </a>
+                        <a href="<?php echo e(route('public.divisi')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.divisi') || request()->routeIs('public.divisi.show') ? 'active' : ''); ?> flex items-center gap-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                            Divisi
+                        </a>
                     </div>
                 </div>
 
@@ -189,9 +206,18 @@
                         <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
                     </button>
                     <div id="mob-acc-aktivitas" class="mobile-accordion-content <?php echo e($isAktivitasActive ? 'open' : ''); ?>">
-                        <a href="<?php echo e(route('public.kegiatan')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.kegiatan') || request()->routeIs('public.kegiatan.show') ? 'active' : ''); ?>">Kegiatan</a>
-                        <a href="<?php echo e(route('public.berita')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.berita') || request()->routeIs('public.berita.show') ? 'active' : ''); ?>">Berita</a>
-                        <a href="<?php echo e(route('public.galeri')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.galeri') ? 'active' : ''); ?>">Galeri</a>
+                        <a href="<?php echo e(route('public.kegiatan')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.kegiatan') || request()->routeIs('public.kegiatan.show') ? 'active' : ''); ?> flex items-center gap-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Kegiatan
+                        </a>
+                        <a href="<?php echo e(route('public.berita')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.berita') || request()->routeIs('public.berita.show') ? 'active' : ''); ?> flex items-center gap-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            Berita
+                        </a>
+                        <a href="<?php echo e(route('public.galeri')); ?>" class="mobile-accordion-item <?php echo e(request()->routeIs('public.galeri') ? 'active' : ''); ?> flex items-center gap-2">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            Galeri
+                        </a>
                     </div>
                 </div>
 
