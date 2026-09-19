@@ -57,6 +57,28 @@
                 <span class="text-xs sm:text-sm font-bold text-primary-navy tracking-tight leading-tight max-w-[140px] sm:max-w-none">{{ $orgName }}</span>
             </a>
 
+            {{-- Navbar Event Preview (Countdown Morph) --}}
+            {{-- Populated by JS from home.blade.php via window.COS_COUNTDOWN --}}
+            <div id="navbar-event-preview"
+                 class="navbar-event-preview"
+                 aria-hidden="true"
+                 aria-label="Kegiatan terdekat">
+
+                {{-- Name: hidden on mobile, flex row on tablet, col line-1 on desktop --}}
+                <span class="nep-name" id="nep-name"></span>
+
+                {{-- Mid separator · — only tablet 768–1023px --}}
+                <span class="nep-sep" aria-hidden="true">·</span>
+
+                {{-- Sub-row: label (desktop only) + countdown (all) --}}
+                <span class="nep-sub">
+                    <span class="nep-label">Kegiatan Terdekat</span>
+                    <span class="nep-label-sep" aria-hidden="true">·</span>
+                    <span class="nep-cd" id="nep-cd"></span>
+                </span>
+
+            </div>
+
             {{-- Desktop Nav Links --}}
             <div class="hidden lg:flex items-center gap-0.5">
 
@@ -336,6 +358,32 @@
                 btn.setAttribute('aria-expanded', String(!open));
             });
         });
+
+        // ── Navbar countdown preview init ──
+        // Called by home.blade.php after window.COS_COUNTDOWN is ready.
+        // No DB query here — data comes purely from the countdown state.
+        window.initNavbarCountdown = function (countdown) {
+            var navPreview = document.getElementById('navbar-event-preview');
+            var nepName    = document.getElementById('nep-name');
+            var nepCd      = document.getElementById('nep-cd');
+
+            if (!navPreview || !nepCd) return;
+
+            // Set event name once
+            if (nepName && countdown.eventName) {
+                nepName.textContent = countdown.eventName;
+            }
+
+            // Subscribe to countdown ticks — updates nep-cd on every second
+            countdown.subscribe(function (state) {
+                if (nepCd) {
+                    nepCd.textContent = state.cdStr || '—';
+                }
+            });
+
+            // Mark ready so scroll-morph JS can detect initialization
+            navPreview.setAttribute('data-ready', 'true');
+        };
 
     }());
     </script>

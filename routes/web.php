@@ -1,6 +1,6 @@
 <?php
 
-// ⚠️ ROUTE SEMENTARA - HAPUS SETELAH DIGUNAKAN
+// //⚠️ ROUTE SEMENTARA - HAPUS SETELAH DIGUNAKAN
 // Route::get('/clear-cache-now', function () {
 //     \Artisan::call('config:clear');
 //     \Artisan::call('cache:clear');
@@ -290,8 +290,8 @@ Route::get('/file/{path}', function (string $path) {
     return response()->file($fullPath);
 })->where('path', '.*')->name('file.serve');
 
-// // ⚠️ ROUTE SEMENTARA - HAPUS SETELAH DIPAKAI
-// // Jalankan migration di hosting via browser
+// ⚠️ ROUTE SEMENTARA - HAPUS SETELAH DIPAKAI
+// Jalankan migration di hosting via browser
 // Route::get('/run-migrate', function () {
 //     try {
 //         \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);

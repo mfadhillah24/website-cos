@@ -859,50 +859,62 @@
 </a>
 
 
-                {{-- Client-side countdown --}}
+
+                {{-- Client-side countdown + Scroll Morph --}}
                 @push('scripts')
                 <script>
                 (function () {
                     'use strict';
 
-                    var TARGET_ISO =
-                        @json($targetDt);
+                    // ═══════════════════════════════════════════════
+                    // SHARED COUNTDOWN STATE — single timer, one source
+                    // ═══════════════════════════════════════════════
 
-                    var END_ISO =
-                        @json($endDt);
+                    var TARGET_ISO = @json($targetDt);
+                    var END_ISO    = @json($endDt);
 
+                    var targetMs = new Date(TARGET_ISO).getTime();
+                    var endMs    = END_ISO ? new Date(END_ISO).getTime() : null;
 
-                    var targetMs =
-                        new Date(TARGET_ISO).getTime();
+                    // Expose shared state so navbar (and any other subscriber)
+                    // can read and react without running a second timer.
+                    window.COS_COUNTDOWN = {
+                        eventName : @json($upcomingActivity->title),
+                        targetMs  : targetMs,
+                        endMs     : endMs,
+                        d: 0, h: 0, m: 0, s: 0,
+                        cdStr     : '',        // formatted for navbar compact display
+                        isOngoing : false,
+                        _subs     : [],
+                        subscribe : function (fn) {
+                            this._subs.push(fn);
+                            // Immediately notify with current state if already ticking
+                            if (this.cdStr) fn(this);
+                        },
+                        _notify   : function () {
+                            var self = this;
+                            this._subs.forEach(function (fn) { fn(self); });
+                        }
+                    };
 
-                    var endMs =
-                        END_ISO
-                            ? new Date(END_ISO).getTime()
-                            : null;
-
-
-                    var elDays =
-                        document.getElementById('cd-days');
-
-                    var elHours =
-                        document.getElementById('cd-hours');
-
-                    var elMinutes =
-                        document.getElementById('cd-minutes');
-
-                    var elSeconds =
-                        document.getElementById('cd-seconds');
-
-                    var wrap =
-                        document.getElementById('countdown-wrap');
+                    // ── DOM refs ──
+                    var elDays    = document.getElementById('cd-days');
+                    var elHours   = document.getElementById('cd-hours');
+                    var elMinutes = document.getElementById('cd-minutes');
+                    var elSeconds = document.getElementById('cd-seconds');
+                    var wrap      = document.getElementById('countdown-wrap');
 
 
                     function pad(n) {
+                        return n < 10 ? '0' + n : String(n);
+                    }
 
-                        return n < 10
-                            ? '0' + n
-                            : String(n);
 
+                    // Compact format for navbar (e.g. "12d 08h 43m 12s" or "43m 21s")
+                    function formatNavCd(d, h, m, s) {
+                        if (d > 0) return d + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
+                        if (h > 0) return pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
+                        return pad(m) + 'm ' + pad(s) + 's';
                     }
 
 
@@ -929,101 +941,162 @@
 
                     function tick() {
 
-                        var now =
-                            Date.now();
-
-                        var diff =
-                            targetMs - now;
+                        var now  = Date.now();
+                        var diff = targetMs - now;
 
 
                         if (diff <= 0) {
 
-                            if (
-                                endMs &&
-                                now < endMs
-                            ) {
-
+                            if (endMs && now < endMs) {
                                 showOngoing();
-
+                                // Notify navbar that event is ongoing
+                                window.COS_COUNTDOWN.isOngoing = true;
+                                window.COS_COUNTDOWN.cdStr     = 'Berlangsung';
+                                window.COS_COUNTDOWN._notify();
                             }
 
                             return;
                         }
 
 
-                        var totalSec =
-                            Math.floor(
-                                diff / 1000
-                            );
+                        var totalSec = Math.floor(diff / 1000);
+                        var days     = Math.floor(totalSec / 86400);
+                        var hours    = Math.floor((totalSec % 86400) / 3600);
+                        var minutes  = Math.floor((totalSec % 3600) / 60);
+                        var seconds  = totalSec % 60;
 
 
-                        var days =
-                            Math.floor(
-                                totalSec / 86400
-                            );
+                        // ── Update section countdown elements ──
+                        if (elDays)    elDays.textContent    = pad(days);
+                        if (elHours)   elHours.textContent   = pad(hours);
+                        if (elMinutes) elMinutes.textContent = pad(minutes);
+                        if (elSeconds) elSeconds.textContent = pad(seconds);
 
 
-                        var hours =
-                            Math.floor(
-                                (totalSec % 86400) / 3600
-                            );
+                        // ── Update shared countdown state ──
+                        window.COS_COUNTDOWN.d     = days;
+                        window.COS_COUNTDOWN.h     = hours;
+                        window.COS_COUNTDOWN.m     = minutes;
+                        window.COS_COUNTDOWN.s     = seconds;
+                        window.COS_COUNTDOWN.cdStr = formatNavCd(days, hours, minutes, seconds);
+                        window.COS_COUNTDOWN._notify();
 
 
-                        var minutes =
-                            Math.floor(
-                                (totalSec % 3600) / 60
-                            );
-
-
-                        var seconds =
-                            totalSec % 60;
-
-
-                        if (elDays) {
-
-                            elDays.textContent =
-                                pad(days);
-
-                        }
-
-
-                        if (elHours) {
-
-                            elHours.textContent =
-                                pad(hours);
-
-                        }
-
-
-                        if (elMinutes) {
-
-                            elMinutes.textContent =
-                                pad(minutes);
-
-                        }
-
-
-                        if (elSeconds) {
-
-                            elSeconds.textContent =
-                                pad(seconds);
-
-                        }
-
-
-                        setTimeout(
-                            tick,
-                            1000
-                        );
+                        setTimeout(tick, 1000);
 
                     }
 
 
+                    // Start timer
                     tick();
+
+
+                    // ── Connect to navbar preview ──
+                    // window.initNavbarCountdown is defined in layouts/public.blade.php.
+                    // It subscribes to window.COS_COUNTDOWN without running a second timer.
+                    if (typeof window.initNavbarCountdown === 'function') {
+                        window.initNavbarCountdown(window.COS_COUNTDOWN);
+                    }
+
+
+                    // ═══════════════════════════════════════════════
+                    // SCROLL MORPH — countdown section → navbar preview
+                    // ═══════════════════════════════════════════════
+
+                    var section    = document.getElementById('upcoming-section');
+                    var cdWrap     = document.getElementById('countdown-wrap');
+                    var navPreview = document.getElementById('navbar-event-preview');
+
+                    if (!section || !cdWrap || !navPreview) return;
+
+                    var prefersRM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    var ticking   = false;
+
+
+                    // Quadratic ease-out: fast start, smooth stop
+                    function easeOut(t) {
+                        return 1 - (1 - t) * (1 - t);
+                    }
+
+
+                    function getScrollProgress() {
+                        var rect    = section.getBoundingClientRect();
+                        var viewH   = window.innerHeight;
+                        var navH    = 68;
+
+                        // ── Morph zones ──
+                        // Zone start: section.bottom at 62% of viewport (section still mostly in view)
+                        // Zone end:   section.bottom just clears the navbar (section gone)
+                        var morphStart = viewH * 0.62;
+                        var morphEnd   = navH + 16;
+
+                        if (morphStart <= morphEnd) return 0;
+
+                        var raw = 1 - (rect.bottom - morphEnd) / (morphStart - morphEnd);
+                        return Math.max(0, Math.min(1, raw));
+                    }
+
+
+                    function applyMorph(progress) {
+
+                        if (prefersRM) {
+                            // Reduced motion: binary crossfade at 50% threshold
+                            var past = progress >= 0.5;
+                            navPreview.style.opacity = past ? '1' : '0';
+                            cdWrap.style.opacity     = past ? '0' : '1';
+                            cdWrap.style.transform   = '';
+                            navPreview.style.transform = '';
+                            return;
+                        }
+
+                        var isMobile  = window.innerWidth < 768;
+
+                        // ── Countdown card (section): fade + translateY + subtle scale ──
+                        // Starts fading at 30% progress, fully gone at 100%
+                        var cdOpacity = progress < 0.30 ? 1 : Math.max(0, 1 - (progress - 0.30) / 0.70);
+                        var cdScale   = 1 - progress * 0.04;                   // max 4% shrink
+                        var cdTransY  = isMobile ? -progress * 6 : -progress * 12;  // moves up
+
+                        cdWrap.style.opacity   = cdOpacity.toFixed(3);
+                        cdWrap.style.transform =
+                            'translateY(' + cdTransY.toFixed(1) + 'px)' +
+                            ' scale(' + cdScale.toFixed(3) + ')';
+
+                        // ── Navbar preview: fade-in + slide from above ──
+                        // Starts at 45% progress, fully visible at 100%
+                        var navRaw  = progress < 0.45 ? 0 : (progress - 0.45) / 0.55;
+                        var navProg = Math.min(1, navRaw);
+                        var easedP  = easeOut(navProg);
+
+                        // Mobile: subtler translate (4px vs 8px)
+                        var maxTransY = isMobile ? 4 : 8;
+                        var navTransY = (1 - easedP) * -maxTransY;
+
+                        navPreview.style.opacity   = easedP.toFixed(3);
+                        navPreview.style.transform =
+                            'translateY(' + navTransY.toFixed(1) + 'px)';
+                    }
+
+
+                    function onScroll() {
+                        if (ticking) return;
+                        ticking = true;
+                        requestAnimationFrame(function () {
+                            ticking = false;
+                            applyMorph(getScrollProgress());
+                        });
+                    }
+
+
+                    window.addEventListener('scroll', onScroll, { passive: true });
+
+                    // Initial render (handles page load at mid-scroll on refresh)
+                    applyMorph(getScrollProgress());
 
                 }());
                 </script>
                 @endpush
+
 
 
             @else

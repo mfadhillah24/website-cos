@@ -56,6 +56,28 @@
             </a>
 
             
+            
+            <div id="navbar-event-preview"
+                 class="navbar-event-preview"
+                 aria-hidden="true"
+                 aria-label="Kegiatan terdekat">
+
+                
+                <span class="nep-name" id="nep-name"></span>
+
+                
+                <span class="nep-sep" aria-hidden="true">·</span>
+
+                
+                <span class="nep-sub">
+                    <span class="nep-label">Kegiatan Terdekat</span>
+                    <span class="nep-label-sep" aria-hidden="true">·</span>
+                    <span class="nep-cd" id="nep-cd"></span>
+                </span>
+
+            </div>
+
+            
             <div class="hidden lg:flex items-center gap-0.5">
 
                 <a href="<?php echo e(route('home')); ?>" class="nav-link-pub <?php echo e(request()->routeIs('home') ? 'active' : ''); ?>">Beranda</a>
@@ -390,6 +412,32 @@
                 btn.setAttribute('aria-expanded', String(!open));
             });
         });
+
+        // ── Navbar countdown preview init ──
+        // Called by home.blade.php after window.COS_COUNTDOWN is ready.
+        // No DB query here — data comes purely from the countdown state.
+        window.initNavbarCountdown = function (countdown) {
+            var navPreview = document.getElementById('navbar-event-preview');
+            var nepName    = document.getElementById('nep-name');
+            var nepCd      = document.getElementById('nep-cd');
+
+            if (!navPreview || !nepCd) return;
+
+            // Set event name once
+            if (nepName && countdown.eventName) {
+                nepName.textContent = countdown.eventName;
+            }
+
+            // Subscribe to countdown ticks — updates nep-cd on every second
+            countdown.subscribe(function (state) {
+                if (nepCd) {
+                    nepCd.textContent = state.cdStr || '—';
+                }
+            });
+
+            // Mark ready so scroll-morph JS can detect initialization
+            navPreview.setAttribute('data-ready', 'true');
+        };
 
     }());
     </script>

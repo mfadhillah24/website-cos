@@ -653,6 +653,119 @@
     }
 
     /* =============================================
+       NAVBAR EVENT PREVIEW — Countdown Morph
+       ============================================= */
+
+    /* Container — flex-1 to fill space between brand and nav links */
+    .navbar-event-preview {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0 2px;
+        gap: 1px;
+        opacity: 0;
+        /* transform controlled by JS (scroll progress) */
+        will-change: opacity, transform;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    /* Event name — visible on mobile, smaller size */
+    .nep-name {
+        display: block;
+        font-size: 10px;
+        font-weight: 700;
+        color: #071A52;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 130px;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+        flex-shrink: 1;
+    }
+
+    /* Mid separator · (name vs countdown) — shown 768–1023px only */
+    .nep-sep {
+        display: none;
+        color: #9CA3AF;
+        font-size: 11px;
+        line-height: 1;
+        flex-shrink: 0;
+    }
+
+    /* Sub-row: always rendered, wraps label + label-sep + countdown */
+    .nep-sub {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        flex-shrink: 0;
+    }
+
+    /* Label "Kegiatan Terdekat" — desktop ≥1024px only */
+    .nep-label {
+        display: none;
+        font-size: 10px;
+        font-weight: 500;
+        color: #6B7280;
+        white-space: nowrap;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        line-height: 1;
+    }
+
+    /* Label separator · (label vs countdown) — desktop only */
+    .nep-label-sep {
+        display: none;
+        color: #9CA3AF;
+        font-size: 10px;
+        line-height: 1;
+    }
+
+    /* Countdown value — always visible */
+    .nep-cd {
+        font-size: 10px;
+        font-weight: 600;
+        color: #1E88E5;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.04em;
+        line-height: 1.2;
+    }
+
+    /* ── Tablet 768–1023px: row — name · countdown ── */
+    @media (min-width: 768px) {
+        .navbar-event-preview {
+            flex-direction: row;
+            gap: 5px;
+            padding: 0 6px;
+        }
+        .nep-name { font-size: 11.5px; max-width: 180px; }
+        .nep-sep  { display: block; }
+        .nep-cd   { font-size: 11.5px; }
+    }
+
+    /* ── Desktop ≥1024px: two-line column ── */
+    @media (min-width: 1024px) {
+        .navbar-event-preview {
+            flex-direction: column;
+            gap: 2px;
+            padding: 0 16px;
+        }
+        .nep-name {
+            max-width: 240px;
+            font-size: 12.5px;
+        }
+        .nep-sep       { display: none; }    /* no mid sep; use label instead */
+        .nep-label     { display: block; }
+        .nep-label-sep { display: block; }
+        .nep-cd        { font-size: 11px; }
+    }
+
+    /* =============================================
        PREFERS REDUCED MOTION
        ============================================= */
     @media (prefers-reduced-motion: reduce) {
@@ -676,6 +789,11 @@
         .btn-hero-primary:hover,
         .btn-hero-secondary:hover {
             transform: none !important;
+        }
+        /* Navbar preview: simple opacity only, no transform animation */
+        .navbar-event-preview {
+            will-change: auto;
+            transition: opacity 0.25s ease;
         }
     }
 }
