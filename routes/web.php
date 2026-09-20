@@ -16,6 +16,15 @@ Route::get('/clear-cache-now', function () {
             <p style="font-family:sans-serif;color:red;"><strong>Jangan lupa hapus route ini setelah selesai!</strong></p>';
 });
 
+Route::get('/debug-about', function () {
+    try {
+        return app()->call([\App\Http\Controllers\Public\TerminalController::class, 'about']);
+    } catch (\Throwable $e) {
+        return '<pre style="color:red; font-size: 16px;"><strong>ERROR 500 DETAILS:</strong><br><br>' . 
+               $e->getMessage() . '<br>in ' . $e->getFile() . ' on line ' . $e->getLine() . '</pre>';
+    }
+});
+
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\FinanceCategoryController;
 use App\Http\Controllers\Admin\FinanceController;
@@ -84,6 +93,9 @@ Route::get('/kontak', [PublicContactController::class, 'showForm'])->name('publi
 Route::post('/kontak', [PublicContactController::class, 'submitForm'])->name('public.kontak.store');
 
 Route::get('/api/terminal/activities', [TerminalController::class, 'activities'])->name('api.terminal.activities');
+Route::get('/api/terminal/kontak', [TerminalController::class, 'kontak'])->name('api.terminal.kontak');
+Route::get('/api/terminal/about', [TerminalController::class, 'about'])->name('api.terminal.about');
+
 
 Route::get('/register', [PublicRegistrationController::class, 'create'])->name('register');
 Route::post('/register', [PublicRegistrationController::class, 'store'])->name('register.store');

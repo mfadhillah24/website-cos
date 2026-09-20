@@ -2,17 +2,24 @@ import { resolvePath, getNodeAtPath } from './filesystem.js';
 
 // Peta navigasi halaman: cd <alias> → redirect ke URL
 const PAGE_NAVIGATION = {
-    'tentang':     '/tentang',
-    'organisasi':  '/organisasi',
-    'divisi':      '/divisi',
-    'kegiatan':    '/kegiatan',
-    'berita':      '/berita',
-    'galeri':      '/galeri',
-    'kontak':      '/kontak',
-    'daftar':      '/register',
-    'register':    '/register',
-    'beranda':     '/',
-    'home':        '/',
+    'tentang': '/tentang',
+    'organisasi': '/organisasi',
+    'divisi': '/divisi',
+    'kegiatan': '/kegiatan',
+    'berita': '/berita',
+    'galeri': '/galeri',
+    'kontak': '/kontak',
+    'daftar': '/register',
+    'register': '/register',
+    'beranda': '/',
+    'home': '/',
+    // Shortcut langsung ke halaman divisi
+    'programming': '/divisi/programming',
+    'networking': '/divisi/networking',
+    'dkv': '/divisi/dkv',
+    'divisi/programming': '/divisi/programming',
+    'divisi/networking': '/divisi/networking',
+    'divisi/dkv': '/divisi/dkv',
 };
 
 export async function executeCommand(commandStr, currentPath, engine) {
@@ -223,10 +230,16 @@ export async function executeCommand(commandStr, currentPath, engine) {
                     <div><span style="color:#e2e8f0;">cd berita</span>     → Halaman Berita</div>
                     <div><span style="color:#e2e8f0;">cd tentang</span>    → Halaman Tentang COS</div>
                     <div><span style="color:#e2e8f0;">cd organisasi</span> → Halaman Organisasi</div>
-                    <div><span style="color:#e2e8f0;">cd divisi</span>     → Halaman Divisi</div>
+                    <div><span style="color:#e2e8f0;">cd divisi</span>     → Halaman Daftar Divisi</div>
                     <div><span style="color:#e2e8f0;">cd galeri</span>     → Halaman Galeri</div>
                     <div><span style="color:#e2e8f0;">cd kontak</span>     → Halaman Kontak</div>
                     <div><span style="color:#e2e8f0;">cd daftar</span>     → Halaman Pendaftaran</div>
+                    <br>
+                    <div style="color:#38bdf8;font-weight:bold;margin-bottom:8px;">── Shortcut Divisi ──</div>
+                    <div><span style="color:#e2e8f0;">cd programming</span>  → Divisi Programming</div>
+                    <div><span style="color:#e2e8f0;">cd networking</span>   → Divisi Networking</div>
+                    <div><span style="color:#e2e8f0;">cd dkv</span>          → Divisi DKV</div>
+                    <div style="color:#475569;font-size:11px;">  (atau: cd divisi/programming, cd divisi/networking, cd divisi/dkv)</div>
                     <br>
                     <div style="color:#38bdf8;font-weight:bold;margin-bottom:8px;">── Filesystem Virtual ──</div>
                     <div><span style="color:#e2e8f0;">ls, pwd, cd, tree, cat</span></div>
@@ -264,7 +277,24 @@ export async function executeCommand(commandStr, currentPath, engine) {
 
             switch (args[1].toLowerCase()) {
                 case 'about':
-                    return { type: 'text', content: 'Cyber Open Source (COS) adalah wadah bagi mahasiswa untuk belajar teknologi, mengembangkan kreativitas, membangun kolaborasi, dan menciptakan solusi digital melalui semangat Open Source.' };
+                    engine.setProcessing(true);
+                    try {
+                        const resAbout = await fetch('/api/terminal/about', {
+                            headers: { 'Accept': 'application/json' }
+                        });
+                        if (!resAbout.ok) throw new Error(`HTTP ${resAbout.status}`);
+                        const dataAbout = await resAbout.json();
+                        engine.setProcessing(false);
+
+                        if (dataAbout.success) {
+                            return { type: 'text', content: dataAbout.data };
+                        }
+                        return { type: 'text', content: 'Gagal memuat informasi about.' };
+                    } catch (e) {
+                        engine.setProcessing(false);
+                        console.error('Fetch about error:', e);
+                        return { type: 'error', content: `Koneksi gagal: ${e.message}. (Pastikan controller dan route sudah diupload & migrate)` };
+                    }
 
                 case 'divisi':
                 case 'divisions':
@@ -272,10 +302,12 @@ export async function executeCommand(commandStr, currentPath, engine) {
                         type: 'html',
                         content: `<div style="font-family:monospace;font-size:12px;color:#94a3b8;line-height:2;">
                             <span style="color:#38bdf8;font-weight:bold;">Divisi COS:</span><br>
-                            📁 <span style="color:#e2e8f0;">Programming</span>  – Web, Laravel, PHP, Python, JS<br>
+                            💻 <span style="color:#e2e8f0;">Programming</span>  – Web, Laravel, PHP, Python, JS<br>
+                               <span style="color:#475569;font-size:11px;">  → ketik: <span style="color:#4ade80;">cd programming</span></span><br>
                             📡 <span style="color:#e2e8f0;">Networking</span>   – Linux, Cisco, Mikrotik<br>
+                               <span style="color:#475569;font-size:11px;">  → ketik: <span style="color:#4ade80;">cd networking</span></span><br>
                             🎨 <span style="color:#e2e8f0;">DKV</span>          – UI/UX, Desain, Multimedia<br>
-                            🐧 <span style="color:#e2e8f0;">OpenSource</span>   – Linux, Git, Komunitas
+                               <span style="color:#475569;font-size:11px;">  → ketik: <span style="color:#4ade80;">cd dkv</span></span>
                         </div>`
                     };
 
@@ -284,11 +316,33 @@ export async function executeCommand(commandStr, currentPath, engine) {
 
                 case 'versi':
                 case 'version':
-                    return { type: 'text', content: 'COS WebTerm v1.0.0 — Cyber Open Source © 2025' };
+                    return { type: 'text', content: 'COS WebTerm v1.0.0 — Cyber Open Source © 2026' };
 
                 case 'kontak':
                 case 'contact':
-                    return { type: 'text', content: 'Instagram : @cyberopensource\nEmail     : admin@cos.org\nWebsite   : cos.unitama.ac.id' };
+                    engine.setProcessing(true);
+                    try {
+                        const resKontak = await fetch('/api/terminal/kontak', {
+                            headers: { 'Accept': 'application/json' }
+                        });
+                        if (!resKontak.ok) throw new Error(`HTTP ${resKontak.status}`);
+                        const dataKontak = await resKontak.json();
+                        engine.setProcessing(false);
+
+                        if (dataKontak.success) {
+                            const k = dataKontak.data;
+                            let kontakText = `Instagram : ${k.instagram}`;
+                            if (k.email    && k.email    !== '-') kontakText += `\nEmail     : ${k.email}`;
+                            if (k.whatsapp && k.whatsapp !== '-') kontakText += `\nWhatsApp  : ${k.whatsapp}`;
+                            if (k.address  && k.address  !== '-') kontakText += `\nAlamat    : ${k.address}`;
+                            return { type: 'text', content: kontakText };
+                        }
+                        return { type: 'text', content: 'Gagal memuat data kontak.' };
+                    } catch (e) {
+                        engine.setProcessing(false);
+                        console.error('Fetch kontak error:', e);
+                        return { type: 'error', content: `Koneksi gagal: ${e.message}. (Pastikan controller dan route sudah diupload & migrate)` };
+                    }
 
                 case 'kegiatan':
                 case 'activities':

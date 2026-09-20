@@ -17,7 +17,13 @@ export function getAutocomplete(currentPath, currentInput) {
     const cmd = parts[0];
     if (['cd', 'ls', 'cat', 'file', 'head', 'tail'].includes(cmd)) {
         // Page navigation aliases for cd
-        const pageAliases = ['tentang', 'organisasi', 'divisi', 'kegiatan', 'berita', 'galeri', 'kontak', 'daftar', 'beranda'];
+        const pageAliases = [
+            'tentang', 'organisasi', 'divisi', 'kegiatan', 'berita',
+            'galeri', 'kontak', 'daftar', 'beranda',
+            // Shortcut divisi
+            'programming', 'networking', 'dkv',
+            'divisi/programming', 'divisi/networking', 'divisi/dkv',
+        ];
         if (cmd === 'cd') {
             const pageMatches = pageAliases.filter(p => p.startsWith(lastPart));
             if (pageMatches.length > 0) {
