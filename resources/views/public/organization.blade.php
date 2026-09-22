@@ -616,6 +616,8 @@
 
                     </li>
                     @endif
+                        </ul>
+                    </li>
                 </ul>
             </div>
 
@@ -625,6 +627,23 @@
                  Desktop .org-tree di atas tidak berubah.
                  ================================================================ --}}
             <div class="org-mobile">
+                {{-- ============================================================
+                     LEVEL 0: PEMBINA (Hardcoded)
+                     ============================================================ --}}
+                <div class="om-node-wrap">
+                    <div class="om-card om-ketua" style="background-color: #f8fafc; border: 2px solid #071A52; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <div class="om-photo">
+                            <x-lucide-user />
+                        </div>
+                        <div class="om-info">
+                            <h4>Tamus Bin Tahir.</h4>
+                            <p class="om-position">Pembina UKM-IT COS</p>
+                            <p class="om-nia">NIDN: 0907078003</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="om-vline"></div>
 
                 {{-- ============================================================
                      LEVEL 1: KETUA UMUM

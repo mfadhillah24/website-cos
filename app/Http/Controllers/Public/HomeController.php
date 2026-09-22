@@ -41,6 +41,20 @@ class HomeController extends Controller
             ->limit(3)
             ->get();
 
+        // Extract photos for hero slideshow from dedicated 'heroheader' folder
+        $heroSlideshowPhotos = collect();
+        $heroHeaderDir = public_path('images/heroheader');
+        if (is_dir($heroHeaderDir)) {
+            $files = \Illuminate\Support\Facades\File::files($heroHeaderDir);
+            $validExtensions = ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'JPEG', 'PNG', 'WEBP'];
+            foreach ($files as $file) {
+                if (in_array($file->getExtension(), $validExtensions)) {
+                    $heroSlideshowPhotos->push(asset('images/heroheader/' . $file->getFilename()));
+                }
+            }
+        }
+        $heroSlideshowPhotos = $heroSlideshowPhotos->values()->all();
+
         // Upcoming activity for countdown
         // Logic:
         //   - status = 'published'  (only visible/public entries)
@@ -89,7 +103,7 @@ class HomeController extends Controller
         return view('public.home', compact(
             'stats', 'latestArticles', 'latestActivities',
             'divisions', 'coreManagement', 'activePeriod', 'galleryPhotos',
-            'ketuaUmum', 'upcomingActivity', 'now'
+            'ketuaUmum', 'upcomingActivity', 'now', 'heroSlideshowPhotos'
         ));
     }
 }

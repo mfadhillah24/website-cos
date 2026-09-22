@@ -36,7 +36,18 @@
                 @if($division->logo)
                     <img src="{{ asset('images/' . $division->logo) }}" alt="Logo {{ $division->name }}" class="w-16 h-16 object-contain">
                 @else
-                    <x-lucide-network class="w-5 h-5 text-[#1A73E8]" />
+                    @php
+                        $divName = strtolower($division->name);
+                    @endphp
+                    @if(str_contains($divName, 'programming'))
+                        <x-lucide-terminal class="w-12 h-12 text-[#1A73E8]" />
+                    @elseif(str_contains($divName, 'network'))
+                        <x-lucide-network class="w-12 h-12 text-[#1A73E8]" />
+                    @elseif(str_contains($divName, 'dkv') || str_contains($divName, 'multimedia') || str_contains($divName, 'desain'))
+                        <x-lucide-palette class="w-12 h-12 text-[#1A73E8]" />
+                    @else
+                        <x-lucide-layers class="w-12 h-12 text-[#1A73E8]" />
+                    @endif
                 @endif
             </div>
             <div>

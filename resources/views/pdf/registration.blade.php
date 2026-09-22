@@ -72,11 +72,13 @@
         <tr>
             <td style="width: 20%; text-align: left;">
                 @php
-                    $logoPath = public_path('images/logo.png');
+                    $resolvedLogoPath = isset($logoPath) && file_exists($logoPath)
+                        ? $logoPath
+                        : public_path('images/logo.png');
                     $logoDataUri = null;
-                    if (file_exists($logoPath)) {
-                        $type = pathinfo($logoPath, PATHINFO_EXTENSION);
-                        $data = file_get_contents($logoPath);
+                    if (file_exists($resolvedLogoPath)) {
+                        $type = pathinfo($resolvedLogoPath, PATHINFO_EXTENSION);
+                        $data = file_get_contents($resolvedLogoPath);
                         $logoDataUri = 'data:image/' . $type . ';base64,' . base64_encode($data);
                     }
                 @endphp

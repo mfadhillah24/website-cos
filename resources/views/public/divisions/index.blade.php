@@ -27,7 +27,18 @@
                 <a href="{{ route('public.divisi.show', $div->slug) }}" class="ui-card p-6 ui-card-hover block group">
                     <div class="flex items-start justify-between mb-4">
                         <div class="w-14 h-14 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center group-hover:bg-primary-navy group-hover:text-white transition-colors text-primary-navy shrink-0">
-                            <x-lucide-network class="w-5 h-5" />
+                            @php
+                                $divName = strtolower($div->name);
+                            @endphp
+                            @if(str_contains($divName, 'programming'))
+                                <x-lucide-terminal class="w-5 h-5" />
+                            @elseif(str_contains($divName, 'network'))
+                                <x-lucide-network class="w-5 h-5" />
+                            @elseif(str_contains($divName, 'dkv') || str_contains($divName, 'multimedia') || str_contains($divName, 'desain'))
+                                <x-lucide-palette class="w-5 h-5" />
+                            @else
+                                <x-lucide-layers class="w-5 h-5" />
+                            @endif
                         </div>
                         <span class="text-xs font-semibold px-2 py-1 bg-gray-100 text-gray-500 rounded-md">
                             {{ $div->programs_count ?? 0 }} Program

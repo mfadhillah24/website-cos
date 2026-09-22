@@ -193,20 +193,20 @@ export async function executeCommand(commandStr, currentPath, engine) {
             return {
                 type: 'html',
                 content: `<div style="display:flex;gap:24px;align-items:flex-start;font-family:monospace;font-size:12px;">
-                    <div style="color:#38bdf8;font-size:36px;font-weight:900;letter-spacing:-2px;line-height:1;">COS</div>
-                    <div style="color:#94a3b8;line-height:1.8;">
-                        <span style="color:#38bdf8;font-weight:bold;">cos</span><span style="color:#e2e8f0;">@</span><span style="color:#38bdf8;font-weight:bold;">unitama</span><br>
-                        <span style="color:#475569;">─────────────────────</span><br>
-                        <span style="color:#38bdf8;">OS:</span> CyberOS Linux x86_64<br>
-                        <span style="color:#38bdf8;">Host:</span> Unitama Web Environment<br>
-                        <span style="color:#38bdf8;">Kernel:</span> 5.15.0-cos<br>
-                        <span style="color:#38bdf8;">Uptime:</span> Aktif 24/7<br>
-                        <span style="color:#38bdf8;">Shell:</span> bash 5.1.16<br>
-                        <span style="color:#38bdf8;">Terminal:</span> COS WebTerm v1.0<br>
-                        <span style="color:#38bdf8;">Tema:</span> COS-Dark<br>
-                        <span style="color:#38bdf8;">Misi:</span> Open Your Mind 🔓
-                    </div>
-                </div>`
+                        <div style="color:#38bdf8;font-size:36px;font-weight:900;letter-spacing:-2px;line-height:1;">COS</div>
+                        <div style="color:#94a3b8;line-height:1.8;">
+                            <span style="color:#38bdf8;font-weight:bold;">cos</span><span style="color:#e2e8f0;">@</span><span style="color:#38bdf8;font-weight:bold;">unitama</span><br>
+                            <span style="color:#475569;">─────────────────────</span><br>
+                            <span style="color:#38bdf8;">OS:</span> CyberOS Linux x86_64<br>
+                            <span style="color:#38bdf8;">Host:</span> Unitama Web Environment<br>
+                            <span style="color:#38bdf8;">Kernel:</span> 5.15.0-cos<br>
+                            <span style="color:#38bdf8;">Uptime:</span> Aktif 24/7<br>
+                            <span style="color:#38bdf8;">Shell:</span> bash 5.1.16<br>
+                            <span style="color:#38bdf8;">Terminal:</span> COS WebTerm v1.0<br>
+                            <span style="color:#38bdf8;">Tema:</span> COS-Dark<br>
+                            <span style="color:#38bdf8;">Misi:</span> Open Your Mind 🔓
+                        </div>
+                    </div>`
             };
 
         case 'htop':
@@ -224,38 +224,8 @@ export async function executeCommand(commandStr, currentPath, engine) {
         case 'man':
             return {
                 type: 'html',
-                content: `<div style="font-family:monospace;font-size:12px;line-height:2;color:#94a3b8;">
-                    <div style="color:#38bdf8;font-weight:bold;margin-bottom:8px;">── Navigasi Website (cd) ──</div>
-                    <div><span style="color:#e2e8f0;">cd kegiatan</span>   → Halaman Kegiatan</div>
-                    <div><span style="color:#e2e8f0;">cd berita</span>     → Halaman Berita</div>
-                    <div><span style="color:#e2e8f0;">cd tentang</span>    → Halaman Tentang COS</div>
-                    <div><span style="color:#e2e8f0;">cd organisasi</span> → Halaman Organisasi</div>
-                    <div><span style="color:#e2e8f0;">cd divisi</span>     → Halaman Daftar Divisi</div>
-                    <div><span style="color:#e2e8f0;">cd galeri</span>     → Halaman Galeri</div>
-                    <div><span style="color:#e2e8f0;">cd kontak</span>     → Halaman Kontak</div>
-                    <div><span style="color:#e2e8f0;">cd daftar</span>     → Halaman Pendaftaran</div>
-                    <br>
-                    <div style="color:#38bdf8;font-weight:bold;margin-bottom:8px;">── Shortcut Divisi ──</div>
-                    <div><span style="color:#e2e8f0;">cd programming</span>  → Divisi Programming</div>
-                    <div><span style="color:#e2e8f0;">cd networking</span>   → Divisi Networking</div>
-                    <div><span style="color:#e2e8f0;">cd dkv</span>          → Divisi DKV</div>
-                    <div style="color:#475569;font-size:11px;">  (atau: cd divisi/programming, cd divisi/networking, cd divisi/dkv)</div>
-                    <br>
-                    <div style="color:#38bdf8;font-weight:bold;margin-bottom:8px;">── Filesystem Virtual ──</div>
-                    <div><span style="color:#e2e8f0;">ls, pwd, cd, tree, cat</span></div>
-                    <div><span style="color:#e2e8f0;">head, tail, file</span></div>
-                    <br>
-                    <div style="color:#38bdf8;font-weight:bold;margin-bottom:8px;">── Sistem ──</div>
-                    <div><span style="color:#e2e8f0;">whoami, hostname, uname, date</span></div>
-                    <div><span style="color:#e2e8f0;">uptime, free -h, df -h, neofetch</span></div>
-                    <div><span style="color:#e2e8f0;">git status, git log, git branch</span></div>
-                    <br>
-                    <div style="color:#38bdf8;font-weight:bold;margin-bottom:8px;">── Perintah COS ──</div>
-                    <div><span style="color:#e2e8f0;">cos about, cos divisi</span></div>
-                    <div><span style="color:#e2e8f0;">cos kegiatan</span>   → Daftar kegiatan mendatang</div>
-                    <br>
-                    <div style="color:#475569;font-size:11px;">Tab = autocomplete │ ↑↓ = riwayat │ clear = bersihkan layar</div>
-                </div>`
+                content: `
+<style>.help-wrapper { font-family: monospace; font-size: 12px; color: #94a3b8; } .help-section { margin: 0 0 14px; } .help-title { color: #38bdf8; font-weight: bold; margin-bottom: 10px; line-height: 1.4; } .help-list { display: flex; flex-direction: column; gap: 6px; } .help-item { display: grid; grid-template-columns: 120px auto 1fr; column-gap: 10px; align-items: baseline; line-height: 1.5; } .help-item.no-arrow { grid-template-columns: 1fr; } .help-command { color: #e2e8f0; white-space: nowrap; } .help-arrow { opacity: 0.7; } .help-description { min-width: 0; } .help-footer { color: #475569; font-size: 11px; margin-top: 14px; }</style><div class="help-wrapper"><div class="help-section"><div class="help-title">── Navigasi Website (cd) ──</div><div class="help-list"><div class="help-item"><span class="help-command">cd kegiatan</span><span class="help-arrow">→</span><span class="help-description">Halaman Kegiatan</span></div><div class="help-item"><span class="help-command">cd berita</span><span class="help-arrow">→</span><span class="help-description">Halaman Berita</span></div><div class="help-item"><span class="help-command">cd tentang</span><span class="help-arrow">→</span><span class="help-description">Halaman Tentang COS</span></div><div class="help-item"><span class="help-command">cd organisasi</span><span class="help-arrow">→</span><span class="help-description">Halaman Organisasi</span></div><div class="help-item"><span class="help-command">cd divisi</span><span class="help-arrow">→</span><span class="help-description">Halaman Daftar Divisi</span></div><div class="help-item"><span class="help-command">cd galeri</span><span class="help-arrow">→</span><span class="help-description">Halaman Galeri</span></div><div class="help-item"><span class="help-command">cd kontak</span><span class="help-arrow">→</span><span class="help-description">Halaman Kontak</span></div><div class="help-item"><span class="help-command">cd daftar</span><span class="help-arrow">→</span><span class="help-description">Halaman Pendaftaran</span></div></div></div><div class="help-section"><div class="help-title">── Shortcut Divisi ──</div><div class="help-list"><div class="help-item"><span class="help-command">cd programming</span><span class="help-arrow">→</span><span class="help-description">Divisi Programming</span></div><div class="help-item"><span class="help-command">cd networking</span><span class="help-arrow">→</span><span class="help-description">Divisi Networking</span></div><div class="help-item"><span class="help-command">cd dkv</span><span class="help-arrow">→</span><span class="help-description">Divisi DKV</span></div><div style="color: #475569; font-size: 11px; margin-top: 2px;">(atau: cd divisi/programming, cd divisi/networking, cd divisi/dkv)</div></div></div><div class="help-section"><div class="help-title">── Filesystem Virtual ──</div><div class="help-list"><div class="help-item no-arrow"><span class="help-command">ls, pwd, cd, tree, cat</span></div><div class="help-item no-arrow"><span class="help-command">head, tail, file</span></div></div></div><div class="help-section"><div class="help-title">── Sistem ──</div><div class="help-list"><div class="help-item no-arrow"><span class="help-command">whoami, hostname, uname, date</span></div><div class="help-item no-arrow"><span class="help-command">uptime, free -h, df -h, neofetch</span></div><div class="help-item no-arrow"><span class="help-command">git status, git log, git branch</span></div></div></div><div class="help-section"><div class="help-title">── Perintah COS ──</div><div class="help-list"><div class="help-item no-arrow"><span class="help-command">cos about, cos divisi</span></div><div class="help-item"><span class="help-command">cos kegiatan</span><span class="help-arrow">→</span><span class="help-description">Daftar kegiatan mendatang</span></div></div></div><div class="help-footer">Tab = autocomplete │ ↑↓ = riwayat │ clear = bersihkan layar</div></div>`
             };
 
         // ─── PERINTAH COS ──────────────────────────────────────────────
@@ -264,14 +234,14 @@ export async function executeCommand(commandStr, currentPath, engine) {
                 return {
                     type: 'html',
                     content: `<div style="font-family:monospace;font-size:12px;color:#94a3b8;line-height:1.8;">
-                        <span style="color:#38bdf8;font-weight:bold;">Penggunaan:</span> cos &lt;perintah&gt;<br>
-                        <span style="color:#38bdf8;">kegiatan</span>  – Daftar kegiatan mendatang<br>
-                        <span style="color:#38bdf8;">divisi</span>    – Daftar divisi COS<br>
-                        <span style="color:#38bdf8;">about</span>     – Tentang COS<br>
-                        <span style="color:#38bdf8;">motto</span>     – Motto COS<br>
-                        <span style="color:#38bdf8;">kontak</span>    – Informasi kontak<br>
-                        <span style="color:#38bdf8;">versi</span>     – Versi terminal
-                    </div>`
+                            <span style="color:#38bdf8;font-weight:bold;">Penggunaan:</span> cos &lt;perintah&gt;<br>
+                            <span style="color:#38bdf8;">kegiatan</span>  – Daftar kegiatan mendatang<br>
+                            <span style="color:#38bdf8;">divisi</span>    – Daftar divisi COS<br>
+                            <span style="color:#38bdf8;">about</span>     – Tentang COS<br>
+                            <span style="color:#38bdf8;">motto</span>     – Motto COS<br>
+                            <span style="color:#38bdf8;">kontak</span>    – Informasi kontak<br>
+                            <span style="color:#38bdf8;">versi</span>     – Versi terminal
+                        </div>`
                 };
             }
 
@@ -301,14 +271,14 @@ export async function executeCommand(commandStr, currentPath, engine) {
                     return {
                         type: 'html',
                         content: `<div style="font-family:monospace;font-size:12px;color:#94a3b8;line-height:2;">
-                            <span style="color:#38bdf8;font-weight:bold;">Divisi COS:</span><br>
-                            💻 <span style="color:#e2e8f0;">Programming</span>  – Web, Laravel, PHP, Python, JS<br>
-                               <span style="color:#475569;font-size:11px;">  → ketik: <span style="color:#4ade80;">cd programming</span></span><br>
-                            📡 <span style="color:#e2e8f0;">Networking</span>   – Linux, Cisco, Mikrotik<br>
-                               <span style="color:#475569;font-size:11px;">  → ketik: <span style="color:#4ade80;">cd networking</span></span><br>
-                            🎨 <span style="color:#e2e8f0;">DKV</span>          – UI/UX, Desain, Multimedia<br>
-                               <span style="color:#475569;font-size:11px;">  → ketik: <span style="color:#4ade80;">cd dkv</span></span>
-                        </div>`
+                                <span style="color:#38bdf8;font-weight:bold;">Divisi COS:</span><br>
+                                💻 <span style="color:#e2e8f0;">Programming</span>  – Web, Laravel, PHP, Python, JS<br>
+                                <span style="color:#475569;font-size:11px;">  → ketik: <span style="color:#4ade80;">cd programming</span></span><br>
+                                📡 <span style="color:#e2e8f0;">Networking</span>   – Linux, Cisco, Mikrotik<br>
+                                <span style="color:#475569;font-size:11px;">  → ketik: <span style="color:#4ade80;">cd networking</span></span><br>
+                                🎨 <span style="color:#e2e8f0;">DKV</span>          – UI/UX, Desain, Multimedia<br>
+                                <span style="color:#475569;font-size:11px;">  → ketik: <span style="color:#4ade80;">cd dkv</span></span>
+                            </div>`
                     };
 
                 case 'motto':
@@ -332,9 +302,9 @@ export async function executeCommand(commandStr, currentPath, engine) {
                         if (dataKontak.success) {
                             const k = dataKontak.data;
                             let kontakText = `Instagram : ${k.instagram}`;
-                            if (k.email    && k.email    !== '-') kontakText += `\nEmail     : ${k.email}`;
+                            if (k.email && k.email !== '-') kontakText += `\nEmail     : ${k.email}`;
                             if (k.whatsapp && k.whatsapp !== '-') kontakText += `\nWhatsApp  : ${k.whatsapp}`;
-                            if (k.address  && k.address  !== '-') kontakText += `\nAlamat    : ${k.address}`;
+                            if (k.address && k.address !== '-') kontakText += `\nAlamat    : ${k.address}`;
                             return { type: 'text', content: kontakText };
                         }
                         return { type: 'text', content: 'Gagal memuat data kontak.' };
@@ -354,12 +324,12 @@ export async function executeCommand(commandStr, currentPath, engine) {
 
                         if (data.success && data.data.length > 0) {
                             let actHtml = `<div style="font-family:monospace;font-size:12px;">
-                                <div style="color:#38bdf8;font-weight:bold;margin-bottom:10px;">── Kegiatan Mendatang ──</div>`;
+                                    <div style="color:#38bdf8;font-weight:bold;margin-bottom:10px;">── Kegiatan Mendatang ──</div>`;
                             data.data.forEach((act, idx) => {
                                 actHtml += `<div style="margin-bottom:8px;">
-                                    <span style="color:#e2e8f0;">[${idx + 1}] ${act.title}</span><br>
-                                    <span style="color:#64748b;padding-left:20px;">📅 ${act.date} &nbsp; 📍 ${act.location}</span>
-                                </div>`;
+                                        <span style="color:#e2e8f0;">[${idx + 1}] ${act.title}</span><br>
+                                        <span style="color:#64748b;padding-left:20px;">📅 ${act.date} &nbsp; 📍 ${act.location}</span>
+                                    </div>`;
                             });
                             actHtml += `</div>`;
                             return { type: 'html', content: actHtml };

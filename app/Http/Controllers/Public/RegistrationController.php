@@ -53,7 +53,15 @@ class RegistrationController extends Controller
     public function downloadPdf(Registration $registration)
     {
         $registration->load('division');
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.registration', compact('registration'));
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.registration', [
+            'registration' => $registration,
+            'logoPath'     => public_path('images/logo.png'),
+        ])->setOptions([
+            'defaultFont'          => 'DejaVu Sans',
+            'isRemoteEnabled'      => true,
+            'isHtml5ParserEnabled' => true,
+        ]);
+            
         return $pdf->download('Bukti_Pendaftaran_' . $registration->nim . '.pdf');
     }
 }

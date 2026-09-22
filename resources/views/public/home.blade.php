@@ -10,26 +10,92 @@
 @section('content')
 
 {{-- ============================================================
-    HERO — INTERACTIVE LINUX TERMINAL
+    HERO — BACKGROUND SLIDESHOW + INTERACTIVE TERMINAL
 ============================================================ --}}
-<section class="relative overflow-hidden min-h-[90vh] flex items-center"
-         style="background: linear-gradient(135deg, #F0F4FA 0%, #EEF2F9 50%, #F5F7FA 100%);"
-         id="hero-section">
+<style>
+    /* ── Hero Slideshow ── */
+    #hero-section {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
 
-    {{-- Dot Grid Background --}}
-    <div class="absolute inset-0 opacity-[0.045]"
-         style="background-image: radial-gradient(circle, #071A52 1px, transparent 1px); background-size: 26px 26px; pointer-events:none;">
-    </div>
+    /* Fallback gradient when no photos in heroheader folder */
+    #hero-section.hero-fallback {
+        background: linear-gradient(-45deg, #FFFFFF 0%, #EAF3FF 20%, #FFFFFF 40%, rgba(30,136,229,0.03) 50%, #DCEBFF 60%, #FFFFFF 80%, rgba(7,26,82,0.015) 90%, #FFFFFF 100%);
+        background-size: 400% 400%;
+        animation: soft-gradient-flow 25s ease-in-out infinite;
+    }
+    @keyframes soft-gradient-flow {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
 
-    {{-- Soft blue glow top-right --}}
-    <div class="absolute top-0 right-0 w-[700px] h-[700px] pointer-events-none"
-         style="background: radial-gradient(ellipse at 70% 30%, rgba(30,136,229,0.10) 0%, transparent 65%); transform: translate(20%, -30%);">
-    </div>
+    /* Slides */
+    .hero-slide {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        opacity: 0;
+        transition: opacity 1.8s ease-in-out;
+        z-index: 0;
+        will-change: opacity;
+    }
+    .hero-slide.active {
+        opacity: 0.3;
+    }
 
-    {{-- Soft navy glow bottom-left --}}
-    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] pointer-events-none"
-         style="background: radial-gradient(ellipse at 30% 70%, rgba(7,26,82,0.07) 0%, transparent 65%); transform: translate(-20%, 30%);">
-    </div>
+    /* Reduced motion: disable crossfade animation */
+    @media (prefers-reduced-motion: reduce) {
+        .hero-slide {
+            transition: none !important;
+        }
+        #hero-section.hero-fallback {
+            animation: none !important;
+            background-position: 0% 50% !important;
+        }
+    }
+</style>
+
+<section id="hero-section" class="{{ empty($heroSlideshowPhotos) ? 'hero-fallback' : '' }}" aria-label="Hero Section">
+
+    @if(!empty($heroSlideshowPhotos))
+        {{-- ── z-0: Background Slideshow ── --}}
+        <div id="hero-slideshow" class="absolute inset-0 z-0 overflow-hidden bg-white" aria-hidden="true">
+            @foreach($heroSlideshowPhotos as $index => $photoUrl)
+                <div class="hero-slide {{ $index === 0 ? 'active' : '' }}"
+                     style="background-image: url('{{ $photoUrl }}');"
+                     data-src="{{ $photoUrl }}">
+                </div>
+            @endforeach
+        </div>
+
+        {{-- ── z-[1]: White Transparent Overlay ── --}}
+        {{-- Mobile: solid white ~50%  |  Desktop: gradient white 70%→50%→30% --}}
+        <div class="absolute inset-0 z-[1] pointer-events-none
+                    bg-white/50
+                    sm:bg-white/45
+                    lg:bg-gradient-to-r
+                    lg:from-white/70
+                    lg:via-white/50
+                    lg:to-white/30"
+             aria-hidden="true">
+        </div>
+
+        {{-- ── z-[2]: Subtle bottom-fade for smooth section blending ── --}}
+        <div class="absolute bottom-0 left-0 right-0 h-24 z-[2] pointer-events-none
+                    bg-gradient-to-b from-transparent to-white/5"
+             aria-hidden="true">
+        </div>
+    @endif
+
+
+
 
     <div class="section-container relative z-10 w-full py-20 md:py-24 lg:py-28">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-16 items-center">
@@ -58,14 +124,14 @@
 
                     <br>
 
-                    <span class="block text-lg md:text-xl font-semibold text-gray-500 mb-1">
+                    <span class="block text-lg md:text-xl font-semibold text-gray-700 mb-1">
                         <i>Open Your Mind For The Future With Open Source</i>
                     </span>
 
                 </h1>
 
                 {{-- Description --}}
-                <p class="reveal fade-up delay-150 max-w-lg mb-10 text-base leading-relaxed text-gray-600">
+                <p class="reveal fade-up delay-150 max-w-lg mb-10 text-base leading-relaxed text-gray-700">
                     Wadah bagi mahasiswa untuk belajar teknologi, mengembangkan kreativitas,
                     membangun kolaborasi, dan menciptakan solusi digital melalui semangat Open Source.
                 </p>
@@ -104,11 +170,26 @@
 
                 </div>
 
+                {{-- Instagram Link --}}
+                @php
+                    $instagram = \App\Models\Setting::get('social_instagram') ?: 'https://instagram.com/cyberopensource';
+                    $igUsername = '@' . trim(parse_url($instagram, PHP_URL_PATH), '/');
+                @endphp
+                <div class="reveal fade-up delay-300 mt-8">
+                    <div class="flex items-center gap-3">
+                        <a href="{{ $instagram }}" target="_blank" rel="noopener noreferrer" 
+                           class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/40 border border-gray-300 shadow-sm text-sm font-medium text-gray-700 hover:text-primary-navy hover:bg-white/80 hover:border-primary-navy/40 hover:shadow-md transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-primary-navy/50 backdrop-blur-md">
+                            <x-lucide-instagram class="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
+                            <span>{{ $igUsername }}</span>
+                        </a>
+                    </div>
+                </div>
+
             </div>
 
 
             {{-- ── RIGHT: Interactive Linux Terminal ── --}}
-            <div class="order-2 relative flex items-center justify-center"
+            <div class="order-2 relative hidden lg:flex items-center justify-center"
                  id="terminal-parallax-wrap">
 
                 {{-- Terminal --}}
@@ -1746,12 +1827,19 @@
                                    group-hover:bg-primary-navy
                                    group-hover:text-white">
 
-                            <x-lucide-network
-                                class="w-5 h-5"
-                            />
-
+                            @php
+                                $divName = strtolower($division->name);
+                            @endphp
+                            @if(str_contains($divName, 'programming'))
+                                <x-lucide-terminal class="w-5 h-5" />
+                            @elseif(str_contains($divName, 'network'))
+                                <x-lucide-network class="w-5 h-5" />
+                            @elseif(str_contains($divName, 'dkv') || str_contains($divName, 'multimedia') || str_contains($divName, 'desain'))
+                                <x-lucide-palette class="w-5 h-5" />
+                            @else
+                                <x-lucide-layers class="w-5 h-5" />
+                            @endif
                         </div>
-
 
                         {{-- Title --}}
                         <h3
@@ -2520,5 +2608,81 @@
     @endpush
 
 @endif
+
+@push('scripts')
+<script>
+(function () {
+    'use strict';
+
+    const DISPLAY_MS   = 6000; // how long each slide is shown
+    const FADE_MS      = 1800; // must match CSS transition duration (1.8s)
+    const VALID_EXT    = /\.(jpg|jpeg|png|webp)$/i;
+
+    const container    = document.getElementById('hero-slideshow');
+    if (!container) return;
+
+    const slides = Array.from(container.querySelectorAll('.hero-slide'));
+    if (slides.length === 0) return;
+
+    /* ── Reduced Motion: show only first slide, no animation ── */
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) {
+        slides[0].classList.add('active');
+        return;
+    }
+
+    /* ── Single image: no slideshow needed ── */
+    if (slides.length === 1) return;
+
+    let currentIndex = 0;
+    let timer        = null;
+    let isTransitioning = false;
+
+    /* Preload image helper */
+    const preload = (index) => {
+        const slide = slides[index];
+        if (!slide) return;
+        const src = slide.dataset.src;
+        if (src && !slide.style.backgroundImage.includes(src)) {
+            slide.style.backgroundImage = `url('${src}')`;
+        }
+    };
+
+    /* All images are already set in inline style from Blade; just ensure next is loaded */
+    preload(1);
+
+    const goNext = () => {
+        if (isTransitioning || mq.matches) return;
+        isTransitioning = true;
+
+        // Fade out current
+        slides[currentIndex].classList.remove('active');
+
+        // Advance index
+        currentIndex = (currentIndex + 1) % slides.length;
+
+        // Preload next-next
+        preload((currentIndex + 1) % slides.length);
+
+        // Fade in next
+        slides[currentIndex].classList.add('active');
+
+        setTimeout(() => { isTransitioning = false; }, FADE_MS);
+    };
+
+    /* Start interval after first DISPLAY_MS */
+    timer = setInterval(goNext, DISPLAY_MS);
+
+    /* Pause on visibility change to avoid drift */
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            clearInterval(timer);
+        } else {
+            timer = setInterval(goNext, DISPLAY_MS);
+        }
+    });
+})();
+</script>
+@endpush
 
 @endsection

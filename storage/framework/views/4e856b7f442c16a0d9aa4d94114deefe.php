@@ -8,24 +8,90 @@
 <?php $__env->startSection('content'); ?>
 
 
-<section class="relative overflow-hidden min-h-[90vh] flex items-center"
-         style="background: linear-gradient(135deg, #F0F4FA 0%, #EEF2F9 50%, #F5F7FA 100%);"
-         id="hero-section">
+<style>
+    /* ── Hero Slideshow ── */
+    #hero-section {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
 
-    
-    <div class="absolute inset-0 opacity-[0.045]"
-         style="background-image: radial-gradient(circle, #071A52 1px, transparent 1px); background-size: 26px 26px; pointer-events:none;">
-    </div>
+    /* Fallback gradient when no photos in heroheader folder */
+    #hero-section.hero-fallback {
+        background: linear-gradient(-45deg, #FFFFFF 0%, #EAF3FF 20%, #FFFFFF 40%, rgba(30,136,229,0.03) 50%, #DCEBFF 60%, #FFFFFF 80%, rgba(7,26,82,0.015) 90%, #FFFFFF 100%);
+        background-size: 400% 400%;
+        animation: soft-gradient-flow 25s ease-in-out infinite;
+    }
+    @keyframes soft-gradient-flow {
+        0%   { background-position: 0% 50%; }
+        50%  { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
 
-    
-    <div class="absolute top-0 right-0 w-[700px] h-[700px] pointer-events-none"
-         style="background: radial-gradient(ellipse at 70% 30%, rgba(30,136,229,0.10) 0%, transparent 65%); transform: translate(20%, -30%);">
-    </div>
+    /* Slides */
+    .hero-slide {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        opacity: 0;
+        transition: opacity 1.8s ease-in-out;
+        z-index: 0;
+        will-change: opacity;
+    }
+    .hero-slide.active {
+        opacity: 0.3;
+    }
 
-    
-    <div class="absolute bottom-0 left-0 w-[500px] h-[500px] pointer-events-none"
-         style="background: radial-gradient(ellipse at 30% 70%, rgba(7,26,82,0.07) 0%, transparent 65%); transform: translate(-20%, 30%);">
-    </div>
+    /* Reduced motion: disable crossfade animation */
+    @media (prefers-reduced-motion: reduce) {
+        .hero-slide {
+            transition: none !important;
+        }
+        #hero-section.hero-fallback {
+            animation: none !important;
+            background-position: 0% 50% !important;
+        }
+    }
+</style>
+
+<section id="hero-section" class="<?php echo e(empty($heroSlideshowPhotos) ? 'hero-fallback' : ''); ?>" aria-label="Hero Section">
+
+    <?php if(!empty($heroSlideshowPhotos)): ?>
+        
+        <div id="hero-slideshow" class="absolute inset-0 z-0 overflow-hidden bg-white" aria-hidden="true">
+            <?php $__currentLoopData = $heroSlideshowPhotos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $photoUrl): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <div class="hero-slide <?php echo e($index === 0 ? 'active' : ''); ?>"
+                     style="background-image: url('<?php echo e($photoUrl); ?>');"
+                     data-src="<?php echo e($photoUrl); ?>">
+                </div>
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+        </div>
+
+        
+        
+        <div class="absolute inset-0 z-[1] pointer-events-none
+                    bg-white/50
+                    sm:bg-white/45
+                    lg:bg-gradient-to-r
+                    lg:from-white/70
+                    lg:via-white/50
+                    lg:to-white/30"
+             aria-hidden="true">
+        </div>
+
+        
+        <div class="absolute bottom-0 left-0 right-0 h-24 z-[2] pointer-events-none
+                    bg-gradient-to-b from-transparent to-white/5"
+             aria-hidden="true">
+        </div>
+    <?php endif; ?>
+
+
+
 
     <div class="section-container relative z-10 w-full py-20 md:py-24 lg:py-28">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-16 items-center">
@@ -54,14 +120,14 @@
 
                     <br>
 
-                    <span class="block text-lg md:text-xl font-semibold text-gray-500 mb-1">
+                    <span class="block text-lg md:text-xl font-semibold text-gray-700 mb-1">
                         <i>Open Your Mind For The Future With Open Source</i>
                     </span>
 
                 </h1>
 
                 
-                <p class="reveal fade-up delay-150 max-w-lg mb-10 text-base leading-relaxed text-gray-600">
+                <p class="reveal fade-up delay-150 max-w-lg mb-10 text-base leading-relaxed text-gray-700">
                     Wadah bagi mahasiswa untuk belajar teknologi, mengembangkan kreativitas,
                     membangun kolaborasi, dan menciptakan solusi digital melalui semangat Open Source.
                 </p>
@@ -100,11 +166,45 @@
 
                 </div>
 
+                
+                <?php
+                    $instagram = \App\Models\Setting::get('social_instagram') ?: 'https://instagram.com/cyberopensource';
+                    $igUsername = '@' . trim(parse_url($instagram, PHP_URL_PATH), '/');
+                ?>
+                <div class="reveal fade-up delay-300 mt-8">
+                    <div class="flex items-center gap-3">
+                        <a href="<?php echo e($instagram); ?>" target="_blank" rel="noopener noreferrer" 
+                           class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/40 border border-gray-300 shadow-sm text-sm font-medium text-gray-700 hover:text-primary-navy hover:bg-white/80 hover:border-primary-navy/40 hover:shadow-md transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-primary-navy/50 backdrop-blur-md">
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-instagram'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 group-hover:scale-110 transition-transform duration-300']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                            <span><?php echo e($igUsername); ?></span>
+                        </a>
+                    </div>
+                </div>
+
             </div>
 
 
             
-            <div class="order-2 relative flex items-center justify-center"
+            <div class="order-2 relative hidden lg:flex items-center justify-center"
                  id="terminal-parallax-wrap">
 
                 
@@ -761,10 +861,10 @@
                         if (prefersRM) {
                             // Reduced motion: binary crossfade at 50% threshold
                             var past = progress >= 0.5;
-                            navPreview.style.opacity = past ? '1' : '0';
+                            // navPreview.style.opacity = past ? '1' : '0';
                             cdWrap.style.opacity     = past ? '0' : '1';
                             cdWrap.style.transform   = '';
-                            navPreview.style.transform = '';
+                            // navPreview.style.transform = '';
                             return;
                         }
 
@@ -781,8 +881,9 @@
                             'translateY(' + cdTransY.toFixed(1) + 'px)' +
                             ' scale(' + cdScale.toFixed(3) + ')';
 
-                        // ── Navbar preview: fade-in + slide from above ──
-                        // Starts at 45% progress, fully visible at 100%
+                        // ── Navbar preview: selalu tampil dari awal ──
+                        // Kode di bawah dikomentari agar countdown di navbar selalu muncul tanpa perlu scroll
+                        /*
                         var navRaw  = progress < 0.45 ? 0 : (progress - 0.45) / 0.55;
                         var navProg = Math.min(1, navRaw);
                         var easedP  = easeOut(navProg);
@@ -794,6 +895,11 @@
                         navPreview.style.opacity   = easedP.toFixed(3);
                         navPreview.style.transform =
                             'translateY(' + navTransY.toFixed(1) + 'px)';
+                        */
+                        
+                        // Set tampilan navbar agar tetap penuh
+                        navPreview.style.opacity = '1';
+                        navPreview.style.transform = 'translateY(0)';
                     }
 
 
@@ -1797,7 +1903,32 @@
                                    group-hover:bg-primary-navy
                                    group-hover:text-white">
 
-                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                            <?php
+                                $divName = strtolower($division->name);
+                            ?>
+                            <?php if(str_contains($divName, 'programming')): ?>
+                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-terminal'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                            <?php elseif(str_contains($divName, 'network')): ?>
+                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('lucide-network'); ?>
@@ -1817,9 +1948,50 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-
+                            <?php elseif(str_contains($divName, 'dkv') || str_contains($divName, 'multimedia') || str_contains($divName, 'desain')): ?>
+                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-palette'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                            <?php else: ?>
+                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-layers'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                            <?php endif; ?>
                         </div>
-
 
                         
                         <h3
@@ -2660,6 +2832,82 @@
     <?php $__env->stopPush(); ?>
 
 <?php endif; ?>
+
+<?php $__env->startPush('scripts'); ?>
+<script>
+(function () {
+    'use strict';
+
+    const DISPLAY_MS   = 6000; // how long each slide is shown
+    const FADE_MS      = 1800; // must match CSS transition duration (1.8s)
+    const VALID_EXT    = /\.(jpg|jpeg|png|webp)$/i;
+
+    const container    = document.getElementById('hero-slideshow');
+    if (!container) return;
+
+    const slides = Array.from(container.querySelectorAll('.hero-slide'));
+    if (slides.length === 0) return;
+
+    /* ── Reduced Motion: show only first slide, no animation ── */
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (mq.matches) {
+        slides[0].classList.add('active');
+        return;
+    }
+
+    /* ── Single image: no slideshow needed ── */
+    if (slides.length === 1) return;
+
+    let currentIndex = 0;
+    let timer        = null;
+    let isTransitioning = false;
+
+    /* Preload image helper */
+    const preload = (index) => {
+        const slide = slides[index];
+        if (!slide) return;
+        const src = slide.dataset.src;
+        if (src && !slide.style.backgroundImage.includes(src)) {
+            slide.style.backgroundImage = `url('${src}')`;
+        }
+    };
+
+    /* All images are already set in inline style from Blade; just ensure next is loaded */
+    preload(1);
+
+    const goNext = () => {
+        if (isTransitioning || mq.matches) return;
+        isTransitioning = true;
+
+        // Fade out current
+        slides[currentIndex].classList.remove('active');
+
+        // Advance index
+        currentIndex = (currentIndex + 1) % slides.length;
+
+        // Preload next-next
+        preload((currentIndex + 1) % slides.length);
+
+        // Fade in next
+        slides[currentIndex].classList.add('active');
+
+        setTimeout(() => { isTransitioning = false; }, FADE_MS);
+    };
+
+    /* Start interval after first DISPLAY_MS */
+    timer = setInterval(goNext, DISPLAY_MS);
+
+    /* Pause on visibility change to avoid drift */
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            clearInterval(timer);
+        } else {
+            timer = setInterval(goNext, DISPLAY_MS);
+        }
+    });
+})();
+</script>
+<?php $__env->stopPush(); ?>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.public', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\SEMESTER 4\PEMROGRAMAN WEB 2\LARAVELL\website-cos\resources\views/public/home.blade.php ENDPATH**/ ?>

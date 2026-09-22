@@ -97,7 +97,15 @@ class RegistrationController extends Controller
         $this->authorize('view_registration');
         $registration->load('division');
 
-        $pdf = Pdf::loadView('pdf.registration', compact('registration'));
+        $pdf = Pdf::loadView('pdf.registration', [
+            'registration' => $registration,
+            'logoPath'     => public_path('images/logo.png'),
+        ])->setOptions([
+            'defaultFont'         => 'DejaVu Sans',
+            'isRemoteEnabled'     => true,
+            'isHtml5ParserEnabled'=> true,
+        ]);
+            
         return $pdf->download('Bukti_Pendaftaran_' . $registration->nim . '.pdf');
     }
 
