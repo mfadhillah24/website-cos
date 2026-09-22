@@ -763,10 +763,10 @@
                         if (prefersRM) {
                             // Reduced motion: binary crossfade at 50% threshold
                             var past = progress >= 0.5;
-                            navPreview.style.opacity = past ? '1' : '0';
+                            // navPreview.style.opacity = past ? '1' : '0';
                             cdWrap.style.opacity     = past ? '0' : '1';
                             cdWrap.style.transform   = '';
-                            navPreview.style.transform = '';
+                            // navPreview.style.transform = '';
                             return;
                         }
 
@@ -783,8 +783,9 @@
                             'translateY(' + cdTransY.toFixed(1) + 'px)' +
                             ' scale(' + cdScale.toFixed(3) + ')';
 
-                        // ── Navbar preview: fade-in + slide from above ──
-                        // Starts at 45% progress, fully visible at 100%
+                        // ── Navbar preview: selalu tampil dari awal ──
+                        // Kode di bawah dikomentari agar countdown di navbar selalu muncul tanpa perlu scroll
+                        /*
                         var navRaw  = progress < 0.45 ? 0 : (progress - 0.45) / 0.55;
                         var navProg = Math.min(1, navRaw);
                         var easedP  = easeOut(navProg);
@@ -796,6 +797,11 @@
                         navPreview.style.opacity   = easedP.toFixed(3);
                         navPreview.style.transform =
                             'translateY(' + navTransY.toFixed(1) + 'px)';
+                        */
+                        
+                        // Set tampilan navbar agar tetap penuh
+                        navPreview.style.opacity = '1';
+                        navPreview.style.transform = 'translateY(0)';
                     }
 
 

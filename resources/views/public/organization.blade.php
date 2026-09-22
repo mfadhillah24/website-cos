@@ -480,9 +480,23 @@
             
             <div class="reveal fade-up delay-150 org-tree">
                 <ul>
-                    {{-- LEVEL 1: KETUA --}}
-                    @if($ketua)
+                    {{-- LEVEL 0: PEMBINA (Hardcoded) --}}
                     <li>
+                        <div class="org-node pembina" style="background-color: #f8fafc; border: 2px solid #071A52;">
+                            <div class="org-photo">
+                                <x-lucide-user class="w-5 h-5 text-gray-300" />
+                            </div>
+                            <div class="org-info">
+                                <h4>Tamus Bin Tahir, S.Pd., M.Kom.</h4>
+                                <p>Pembina UKM-IT COS</p>
+                                <p class="nia">NIDN: 0907078003</p>
+                            </div>
+                        </div>
+
+                        <ul>
+                            {{-- LEVEL 1: KETUA --}}
+                            @if($ketua)
+                            <li>
                         <div class="org-node ketua">
                             <div class="org-photo">
                                 @if($ketua->member->photo)

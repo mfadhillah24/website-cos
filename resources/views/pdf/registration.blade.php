@@ -71,9 +71,19 @@
     <table style="width: 100%; border-bottom: 2px solid #071A52; margin-bottom: 20px; padding-bottom: 10px;">
         <tr>
             <td style="width: 20%; text-align: left;">
-                @if(file_exists(public_path('images/logo.png')))
-                    <img src="{{ public_path('images/logo.png') }}" style="width: 70px; height: auto;" alt="Logo">
+                @php
+                    $logoPath = public_path('images/logo.png');
+                    $logoDataUri = null;
+                    if (file_exists($logoPath)) {
+                        $type = pathinfo($logoPath, PATHINFO_EXTENSION);
+                        $data = file_get_contents($logoPath);
+                        $logoDataUri = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                    }
+                @endphp
+                @if($logoDataUri)
+                    <img src="{{ $logoDataUri }}" style="width: 70px; height: auto;" alt="Logo">
                 @endif
+
             </td>
             <td style="width: 60%; text-align: center;">
                 <h1 style="color: #071A52; margin: 0; font-size: 24px;">UKM-IT Cyber Open Source</h1>
