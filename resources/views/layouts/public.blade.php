@@ -248,7 +248,7 @@
                         <a href="{{ route('admin.dashboard') }}" class="btn-secondary flex-1 text-center !text-sm">Dashboard</a>
                     @else
                         <a href="{{ route('login') }}" class="btn-secondary flex-1 text-center !text-sm">Login</a>
-                        <a href="{{ route('register') }}" class="btn-primary flex-1 text-center !text-sm">Daftar</a>
+                       
                     @endauth
                 </div>
             </div>

@@ -47,7 +47,7 @@
         will-change: opacity;
     }
     .hero-slide.active {
-        opacity: 0.3;
+        opacity: 0.4;
     }
 
     /* Reduced motion: disable crossfade animation */
@@ -75,17 +75,15 @@
             @endforeach
         </div>
 
-        {{-- ── z-[1]: White Transparent Overlay ── --}}
-        {{-- Mobile: solid white ~50%  |  Desktop: gradient white 70%→50%→30% --}}
         <div class="absolute inset-0 z-[1] pointer-events-none
-                    bg-white/50
-                    sm:bg-white/45
-                    lg:bg-gradient-to-r
-                    lg:from-white/70
-                    lg:via-white/50
-                    lg:to-white/30"
-             aria-hidden="true">
-        </div>
+            bg-[#071A52]/30
+            sm:bg-[#071A52]/25
+            lg:bg-gradient-to-r
+            lg:from-[#071A52]/50
+            lg:via-[#0B2D5C]/25
+            lg:to-[#1E88E5]/10"
+     aria-hidden="true">
+</div>
 
         {{-- ── z-[2]: Subtle bottom-fade for smooth section blending ── --}}
         <div class="absolute bottom-0 left-0 right-0 h-24 z-[2] pointer-events-none
