@@ -68,14 +68,11 @@
 </head>
 <body>
 
-    <table style="width: 100%; border-bottom: 2px solid #071A52; margin-bottom: 20px; padding-bottom: 10px;">
-        <tr>
-            <td style="width: 100%; text-align: center;">
-                <h1 style="color: #071A52; margin: 0; font-size: 24px;">UKM-IT Cyber Open Source</h1>
-                <p style="margin: 5px 0 0 0; color: #666;">Open Your Mind for The Future With Open Source</p>
-            </td>
-        </tr>
-    </table>
+
+    <div style="border-bottom: 2px solid #071A52; margin-bottom: 20px; padding-bottom: 10px; text-align: center;">
+        <h1 style="color: #071A52; margin: 0; font-size: 24px;">UKM-IT Cyber Open Source</h1>
+        <p style="margin: 5px 0 0 0; color: #666;">Open Your Mind for The Future With Open Source</p>
+    </div>
 
     <div class="title">
         Formulir Pendaftaran

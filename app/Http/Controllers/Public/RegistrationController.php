@@ -53,9 +53,34 @@ class RegistrationController extends Controller
     public function downloadPdf(Registration $registration)
     {
         $registration->load('division');
+
+        // Generate base64 logo — wajib agar lolos open_basedir restriction di hosting
+        $logoBase64 = null;
+        
+        // Coba berbagai kemungkinan nama file logo
+        $orgLogo = \App\Models\Setting::get('org_logo');
+        $candidates = array_filter(array_unique([
+            $orgLogo ? 'images/' . $orgLogo : null,
+            'images/logo.png',
+            'images/logo-cos.png',
+            'images/logo_pdf.png',
+        ]));
+
+        foreach ($candidates as $candidate) {
+            $path = public_path($candidate);
+            if (file_exists($path)) {
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                if ($data !== false && strlen($data) > 0) {
+                    $logoBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                    break;
+                }
+            }
+        }
+
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.registration', [
             'registration' => $registration,
-            'logoPath'     => public_path('images/logo.png'),
+            'logoBase64'   => $logoBase64,
         ])->setOptions([
             'defaultFont'          => 'DejaVu Sans',
             'isRemoteEnabled'      => true,

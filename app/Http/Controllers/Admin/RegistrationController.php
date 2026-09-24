@@ -97,13 +97,25 @@ class RegistrationController extends Controller
         $this->authorize('view_registration');
         $registration->load('division');
 
+        // Generate base64 logo — wajib agar lolos open_basedir restriction di hosting
+        $logoBase64 = null;
+        $orgLogo = \App\Models\Setting::get('org_logo');
+        if ($orgLogo) {
+            $path = public_path('images/' . $orgLogo);
+            if (file_exists($path)) {
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                $logoBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            }
+        }
+
         $pdf = Pdf::loadView('pdf.registration', [
             'registration' => $registration,
-            'logoPath'     => public_path('images/logo.png'),
+            'logoBase64'   => $logoBase64,
         ])->setOptions([
-            'defaultFont'         => 'DejaVu Sans',
-            'isRemoteEnabled'     => true,
-            'isHtml5ParserEnabled'=> true,
+            'defaultFont'          => 'DejaVu Sans',
+            'isRemoteEnabled'      => true,
+            'isHtml5ParserEnabled' => true,
         ]);
             
         return $pdf->download('Bukti_Pendaftaran_' . $registration->nim . '.pdf');

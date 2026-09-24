@@ -448,11 +448,20 @@
 
             @php
                 $orgLogo = \App\Models\Setting::get('org_logo');
+                $logoBase64 = null;
+                if ($orgLogo) {
+                    $path = public_path('images/' . $orgLogo);
+                    if (file_exists($path)) {
+                        $type = pathinfo($path, PATHINFO_EXTENSION);
+                        $data = file_get_contents($path);
+                        $logoBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                    }
+                }
             @endphp
 
-            @if($orgLogo)
+            @if($logoBase64)
                 <img
-                    src="{{ public_path('images/' . $orgLogo) }}"
+                    src="{{ $logoBase64 }}"
                     alt="Logo"
                     class="header-logo"
                 >
