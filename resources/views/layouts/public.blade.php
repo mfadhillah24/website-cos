@@ -46,7 +46,15 @@
         // ── Global countdown data (used by navbar preview on every page) ──
         $isHomePage = request()->routeIs('home');
         $globalUpcoming = \App\Models\Activity::where('status', 'published')
-            ->where('start_date', '>=', \Illuminate\Support\Carbon::today()->toDateString())
+            ->where(function ($query) {
+                $today = \Illuminate\Support\Carbon::today()->toDateString();
+                $query->where('start_date', '>=', $today)
+                      ->orWhere(function ($q) use ($today) {
+                          $q->where('start_date', '<=', $today)
+                            ->whereNotNull('end_date')
+                            ->where('end_date', '>=', $today);
+                      });
+            })
             ->orderBy('start_date', 'asc')
             ->first();
         $globalTargetDt = null;
@@ -430,17 +438,24 @@
             var nepName    = document.getElementById('nep-name');
             var nepCd      = document.getElementById('nep-cd');
 
-            if (!navPreview || !nepCd) return;
-
-            // Set event name once
-            if (nepName && countdown.eventName) {
-                nepName.textContent = countdown.eventName;
-            }
+            if (!navPreview) return;
 
             // Subscribe to countdown ticks — updates nep-cd on every second
             countdown.subscribe(function (state) {
-                if (nepCd) {
-                    nepCd.textContent = state.cdStr || '—';
+                if (state.isOngoing) {
+                    var slug = state.eventSlug || '';
+                    var url = slug ? '{{ url("/kegiatan") }}/' + slug : '#';
+                    var nameHtml = countdown.eventName ? '<span class="nep-name">' + countdown.eventName + '</span><span class="nep-sep" aria-hidden="true">·</span>' : '';
+                    navPreview.innerHTML = nameHtml + '<a href="' + url + '" class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 transition-colors shadow-sm" style="text-decoration: none;"><span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 animate-pulse"></span><span class="font-semibold text-[10px] sm:text-xs tracking-wide">Kegiatan Sedang Berlangsung</span></a>';
+                    navPreview.style.opacity = '1';
+                    navPreview.style.pointerEvents = 'auto';
+                } else {
+                    if (nepName && countdown.eventName && !nepName.textContent) {
+                        nepName.textContent = countdown.eventName;
+                    }
+                    if (nepCd) {
+                        nepCd.textContent = state.cdStr || '—';
+                    }
                 }
             });
 

@@ -76,12 +76,12 @@
         </div>
 
         <div class="absolute inset-0 z-[1] pointer-events-none
-            bg-[#071A52]/30
-            sm:bg-[#071A52]/25
+            bg-white/60
+            sm:bg-white/50
             lg:bg-gradient-to-r
-            lg:from-[#071A52]/50
-            lg:via-[#0B2D5C]/25
-            lg:to-[#1E88E5]/10"
+            lg:from-white/80
+            lg:via-white/50
+            lg:to-white/20"
      aria-hidden="true">
 </div>
 
@@ -540,6 +540,32 @@
                     </span>
 
                 </div>
+
+                @push('scripts')
+                <script>
+                (function () {
+                    'use strict';
+                    window.COS_COUNTDOWN = {
+                        eventName : @json($upcomingActivity->title),
+                        eventSlug : @json($upcomingActivity->slug),
+                        isOngoing : true,
+                        _subs     : [],
+                        subscribe : function (fn) {
+                            this._subs.push(fn);
+                            fn(this);
+                        }
+                    };
+                    if (typeof window.initNavbarCountdown === 'function') {
+                        window.initNavbarCountdown(window.COS_COUNTDOWN);
+                    }
+                    var navPreview = document.getElementById('navbar-event-preview');
+                    if (navPreview) {
+                        navPreview.style.opacity = '1';
+                        navPreview.style.transform = 'translateY(0)';
+                    }
+                }());
+                </script>
+                @endpush
 
 
             @elseif($serverStatus === 'upcoming')
